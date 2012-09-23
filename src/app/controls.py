@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import sys
 from app import bottle
 from app.bottle import route, run, static_file, view, redirect
 import conf

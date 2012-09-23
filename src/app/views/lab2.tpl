@@ -5,17 +5,17 @@
     <p>Similar to the solid colors, we have varied striped progress bars.</p>
 
     <div class="progress progress-info progress-striped active" style="margin-bottom: 9px;">
-        <div id="progress1" class="bar" style="width: 0"></div>
+        <div id="progress1" class="bar" style="width: 0%"></div>
     </div>
 
     <div class="progress progress-success progress-striped active" style="margin-bottom: 9px;">
-        <div id="progress2" class="bar" style="width: 0"></div>
+        <div id="progress2" class="bar" style="width: 0%"></div>
     </div>
     <div class="progress progress-warning progress-striped active" style="margin-bottom: 9px;">
-        <div id="progress3" class="bar" style="width: 0"></div>
+        <div id="progress3" class="bar" style="width: 0%"></div>
     </div>
     <div class="progress progress-danger progress-striped active" style="margin-bottom: 9px;">
-        <div id="progress4" class="bar" style="width: 0"></div>
+        <div id="progress4" class="bar" style="width: 0%"></div>
     </div>
 
 </div>
