@@ -1,0 +1,8 @@
+syntax: regexp
+
+__pycache__
+\.pyc
+\.pyo
+
+\.idea/
+^tmp/
