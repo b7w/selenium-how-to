@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from app import bottle
 from app.bottle import route, run, static_file, view, redirect
+import conf
 
 bottle.TEMPLATE_PATH = ['app/views']
 
@@ -32,6 +33,11 @@ def lab2():
     return {}
 
 
+@route('/lab2/saved/')
+def lab2saved():
+    return "<h1>Saved</h1>"
+
+
 @route('/lab3/')
 @view('lab3')
 def hello():
@@ -43,4 +49,4 @@ def hello():
 def about():
     return {}
 
-run(host='localhost', port=8000, reloader=True, debug=True)
+run(host=conf.SERVER_HOST, port=conf.SERVER_PORT, reloader=True, debug=True)
