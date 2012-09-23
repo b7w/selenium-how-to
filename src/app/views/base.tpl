@@ -60,7 +60,7 @@
     <hr>
 
     <footer>
-        <p>&copy; <a href="mailto:isudoblog@gmail.com">B7W</a> 2012</p>
+        <p>&copy; <a href="mailto:black7white@ya.ru">B7W</a> 2012</p>
     </footer>
 
 </div>

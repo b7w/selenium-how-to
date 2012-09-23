@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 import re
 import unittest
-import http
-import urllib
+from urllib.parse import urlsplit
+from http.client import HTTPConnection
 
 from tests.base import BaseSeleniumTest
 
@@ -15,7 +15,7 @@ class Lab1Test(BaseSeleniumTest):
         Get this links.
         """
         self.driver.get(self.base_url + "/lab1/")
-        assert "lab 1" in self.driver.title.lower()
+        self.assertTitle('lab 1')
 
         all_a = self.find_all(css="a[href]")
         lab_a_links = []
@@ -36,7 +36,7 @@ class Lab1Test(BaseSeleniumTest):
         Check http status code of all css, js, img resources on a page
         """
         self.driver.get(self.base_url + "/lab1/")
-        assert "lab 1" in self.driver.title.lower()
+        self.assertTitle('lab 1')
 
         for item in self.find_all(css="link[href]"):
             assert self.http_status(item.get_attribute("href")) == 200
@@ -48,15 +48,17 @@ class Lab1Test(BaseSeleniumTest):
             assert self.http_status(item.get_attribute("src")) == 200
 
         for item in self.find_all(css="a[href]"):
-            assert self.http_status(item.get_attribute("href")) == 200
+            link = item.get_attribute("href")
+            if link.startswith('http:'):
+                assert self.http_status(link) == 200
 
     def http_status(self, url):
         """
         Make httplib.HTTPConnection to the server send GET request and return status.
         Url is parsed with urlparse.urlparse
         """
-        host = urllib.parse(url)
-        conn = http.client.HTTPConnection(host.netloc)
+        host = urlsplit(url)
+        conn = HTTPConnection(host.netloc, timeout=8)
         conn.request("GET", host.path)
         res = conn.getresponse()
         return res.status

@@ -11,7 +11,7 @@ class Lab3Test(BaseSeleniumTest):
         Test sum
         """
         self.driver.get(self.base_url + '/lab3/')
-        assert 'lab 3' in self.driver.title.lower()
+        self.assertTitle('lab 3')
 
         self.find(id='num7').click()
         self.assertText(7, 0)
@@ -35,7 +35,7 @@ class Lab3Test(BaseSeleniumTest):
         Test min
         """
         self.driver.get(self.base_url + '/lab3/')
-        assert 'lab 3' in self.driver.title.lower()
+        self.assertTitle('lab 3')
 
         self.find(id='num1').click()
         self.find(id='num8').click()
@@ -59,7 +59,7 @@ class Lab3Test(BaseSeleniumTest):
         Test mul
         """
         self.driver.get(self.base_url + '/lab3/')
-        assert 'lab 3' in self.driver.title.lower()
+        self.assertTitle('lab 3')
 
         self.find(id='num4').click()
         self.assertText(4, 0)
@@ -83,7 +83,7 @@ class Lab3Test(BaseSeleniumTest):
         Test del
         """
         self.driver.get(self.base_url + '/lab3/')
-        assert 'lab 3' in self.driver.title.lower()
+        self.assertTitle('lab 3')
 
         self.find(id='num1').click()
         self.find(id='num5').click()
@@ -108,7 +108,7 @@ class Lab3Test(BaseSeleniumTest):
         Test clear
         """
         self.driver.get(self.base_url + '/lab3/')
-        assert 'lab 3' in self.driver.title.lower()
+        self.assertTitle('lab 3')
 
         self.find(id='num3').click()
         self.find(id='num5').click()
