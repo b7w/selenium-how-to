@@ -33,10 +33,26 @@ class BaseSeleniumTest(unittest.TestCase):
             return func(by=By.CSS_SELECTOR, value=css)
 
     def find(self, **kwargs):
+        """
+        :rtype: selenium.webdriver.remote.webelement.WebElement
+        """
+        if len(kwargs) != 1:
+            raise ValueError("Only one key argument allowed")
         return self._find_element(self.driver.find_element, **kwargs)
 
     def find_all(self, **kwargs):
+        """
+        :rtype: list of selenium.webdriver.remote.webelement.WebElement
+        """
+        if len(kwargs) != 1:
+            raise ValueError("Only one key argument allowed")
         return self._find_element(self.driver.find_elements, **kwargs)
+
+    def assertTitle(self, part):
+        """
+        Assert that `part` in self.driver.title.lower()
+        """
+        assert part in self.driver.title.lower()
 
     def is_present(self, **kwargs):
         """
