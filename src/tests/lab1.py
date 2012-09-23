@@ -54,8 +54,8 @@ class Lab1Test(BaseSeleniumTest):
 
     def http_status(self, url):
         """
-        Make httplib.HTTPConnection to the server send GET request and return status.
-        Url is parsed with urlparse.urlparse
+        Make HTTPConnection to the server send GET request and return status.
+        Url is parsed with urlsplit.
         """
         host = urlsplit(url)
         conn = HTTPConnection(host.netloc, timeout=8)

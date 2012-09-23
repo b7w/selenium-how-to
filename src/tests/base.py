@@ -4,19 +4,18 @@ import unittest
 import conf
 
 from selenium import webdriver
-from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 
 
 class BaseSeleniumTest(unittest.TestCase):
     def setUp(self):
         """
-        Запускается перед каждым вызовом метода теста
+        Run before test method call
         """
         self.driver = webdriver.Firefox()
-        # Неявное ожидание при поиске элементов, в случае если они не появились сразу же.
+        # waite if elements not found
         self.driver.implicitly_wait(0.5)
-        self.base_url = 'http://' + conf.SERVER
+        self.base_url = 'http://' + conf.SERVER_URL
 
     def _find_element(self, func, id=None, xpath=None, cls=None, name=None, tag=None, css=None):
         if id:
@@ -54,27 +53,9 @@ class BaseSeleniumTest(unittest.TestCase):
         """
         assert part in self.driver.title.lower()
 
-    def is_present(self, **kwargs):
-        """
-        Wrapper for `driver.find_element` that catch NoSuchElementException
-        """
-        try:
-            self.find(**kwargs)
-        except NoSuchElementException:
-            return False
-        return True
-
-    def send_post(self, input, button, data):
-        """
-        Clear `input` filed, set `data` and click `button`
-        """
-        self.driver.find_element_by_name(input).clear()
-        self.driver.find_element_by_name(input).send_keys(data)
-        self.driver.find_element_by_css_selector(button).click()
-
     def tearDown(self):
         """
-        Запускается после каждого вызова метода теста
+        Run after test method call
         """
         self.driver.quit()
 
