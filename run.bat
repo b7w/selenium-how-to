@@ -1,4 +1,2 @@
-@echo off
 cd src
-start C:\Python32\pythonw.exe -B runner.py
-exit
+start C:\Python32\python.exe -B runner.py
