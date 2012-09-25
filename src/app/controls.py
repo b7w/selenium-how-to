@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
-import sys
-from app import bottle
-from app.bottle import route, run, static_file, view, redirect
-import conf
+from . import bottle
+from .bottle import route, static_file, view, redirect
 
 bottle.TEMPLATE_PATH = ['app/views']
 
@@ -49,5 +47,3 @@ def hello():
 @view('about')
 def about():
     return {}
-
-run(host=conf.SERVER_HOST, port=conf.SERVER_PORT, reloader=True, debug=True)
