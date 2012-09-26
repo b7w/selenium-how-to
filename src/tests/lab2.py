@@ -6,6 +6,8 @@ from tests.base import BaseSeleniumTest
 
 
 class Lab2Test(BaseSeleniumTest):
+    name = 'Test lab 2'
+
     def test_input1(self):
         """
         Test text input and checkbox

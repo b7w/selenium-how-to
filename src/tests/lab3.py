@@ -6,6 +6,8 @@ from tests.base import BaseSeleniumTest
 
 
 class Lab3Test(BaseSeleniumTest):
+    name = 'Test lab 3'
+
     def test_sum(self):
         """
         Test sum

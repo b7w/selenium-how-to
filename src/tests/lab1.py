@@ -8,6 +8,8 @@ from tests.base import BaseSeleniumTest
 
 
 class Lab1Test(BaseSeleniumTest):
+    name = 'Test lab 1'
+
     def test_follow_links(self):
         """
         Find all links ( 'a' tag ) with href attribute,
