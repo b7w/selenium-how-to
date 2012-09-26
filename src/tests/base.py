@@ -8,6 +8,10 @@ from selenium.webdriver.common.by import By
 
 
 class BaseSeleniumTest(unittest.TestCase):
+    """
+    You need to extend form this class. And it will be load to UI runner automatic.
+    """
+
     def setUp(self):
         """
         Run before test method call
@@ -58,6 +62,3 @@ class BaseSeleniumTest(unittest.TestCase):
         Run after test method call
         """
         self.driver.quit()
-
-if __name__ == '__main__':
-    unittest.main()
