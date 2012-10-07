@@ -17,6 +17,7 @@ class Application(Frame):
     def __init__(self, master=None):
         Frame.__init__(self, master)
         self.master.title('Selenium samples runner')
+        self.master.wm_iconbitmap(default='app/static/favicon.ico')
         self.pack()
         self.createWidgets()
         self.start_server()
@@ -89,9 +90,10 @@ class Application(Frame):
                 except Exception as e:
                     print("Fatal error on test running: " + str(e))
 
-            path = os.path.abspath(conf.RESULT_PATH)
-            path = 'start {0}'.format(path)
-            os.system(path)
+            if conf.RESULT_ENABLE:
+                path = os.path.abspath(conf.RESULT_PATH)
+                path = 'start {0}'.format(path)
+                os.system(path)
             self.test_status = False
 
         if self.test_status:

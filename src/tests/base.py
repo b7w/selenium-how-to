@@ -11,15 +11,23 @@ class BaseSeleniumTest(unittest.TestCase):
     """
     You need to extend form this class. And it will be load to UI runner automatic.
     """
+    name = 'Test name in UI'
+    base_url = 'http://' + conf.SERVER_URL
+
+    @classmethod
+    def setUpClass(cls):
+        """
+        Run before testing
+        """
+        cls.driver = webdriver.Firefox()
+        # waite if elements not found
+        cls.driver.implicitly_wait(0.5)
 
     def setUp(self):
         """
         Run before test method call
         """
-        self.driver = webdriver.Firefox()
-        # waite if elements not found
-        self.driver.implicitly_wait(0.5)
-        self.base_url = 'http://' + conf.SERVER_URL
+        pass
 
     def _find_element(self, func, id=None, xpath=None, cls=None, name=None, tag=None, css=None):
         if id:
@@ -61,4 +69,11 @@ class BaseSeleniumTest(unittest.TestCase):
         """
         Run after test method call
         """
-        self.driver.quit()
+        pass
+
+    @classmethod
+    def tearDownClass(cls):
+        """
+        Run after testing
+        """
+        cls.driver.quit()
