@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import re
 import unittest
 from urllib.parse import urlsplit
 from http.client import HTTPConnection
@@ -19,15 +18,14 @@ class Lab1Test(BaseSeleniumTest):
         self.driver.get(self.base_url + "/lab1/")
         self.assertTitle('lab 1')
 
-        all_a = self.find_all(css="a[href]")
-        lab_a_links = []
-        for item in all_a:
+        elements = self.find_all(css=".row-fluid a[href]")
+        links = []
+        for item in elements:
             href = item.get_attribute("href")
-            if re.match(".*/lab1/\w+/$", href):
-                lab_a_links.append((item.text, href))
+            links.append((item.text, href))
 
-        assert len(lab_a_links) == 9, len(lab_a_links)
-        for text, href in lab_a_links:
+        assert len(links) == 9, len(links)
+        for text, href in links:
             self.driver.get(href)
             for word in text.split():
                 assert word.lower() in self.driver.page_source.lower()

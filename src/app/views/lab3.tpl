@@ -40,9 +40,9 @@
 
     <p>
         <button class="btn btn-calc" id="num0">0</button>
-        <button class="btn btn-calc" id="point">.</button>
         <button class="btn btn-calc" id="plus">+</button>
         <button class="btn btn-calc" id="equal">=</button>
+        <button class="btn btn-calc" id="point">.</button>
     </p>
 
 </div>
