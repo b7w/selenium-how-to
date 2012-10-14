@@ -12,7 +12,6 @@ class Lab1Test(BaseSeleniumTest):
     def test_follow_links(self):
         """
         Find all links ( 'a' tag ) with href attribute,
-        filter with regex for .../lab1/.../
         Get this links.
         """
         self.driver.get(self.base_url + "/lab1/")
@@ -22,14 +21,15 @@ class Lab1Test(BaseSeleniumTest):
         links = []
         for item in elements:
             href = item.get_attribute("href")
-            links.append((item.text, href))
+            links.append((item.text.lower(), href))
 
         assert len(links) == 9, len(links)
         for text, href in links:
             self.driver.get(href)
+            source = self.driver.page_source.lower()
             for word in text.split():
-                assert word.lower() in self.driver.page_source.lower()
-            assert self.find(css="span.name").text == text.lower().replace(' ', '')
+                assert word in source
+            assert self.find(css="span.name").text.lower() == text.replace(' ', '')
 
     def test_resource(self):
         """
@@ -59,7 +59,7 @@ class Lab1Test(BaseSeleniumTest):
         """
         host = urlsplit(url)
         conn = HTTPConnection(host.netloc, timeout=8)
-        conn.request("GET", host.path)
+        conn.request("HEAD", host.path)
         res = conn.getresponse()
         return res.status
 

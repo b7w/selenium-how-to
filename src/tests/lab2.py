@@ -124,21 +124,19 @@ class Lab2Test(BaseSeleniumTest):
         in5 = 'path'
         in6 = 'five!' * 32
         """
-        in1 = self.find(name='in1')
-        in2 = self.find(name='in2')
-        in3 = Select(self.find(name='in3'))
-        in4 = Select(self.find(name='in4'))
-        in5 = self.find(name='in5')
-        in6 = self.find(name='in6')
+        self.find(name='in1').send_keys('Black7White')
+        self.find(name='in2').click()
 
-        in1.send_keys('Black7White')
-        in2.click()
+        in3 = Select(self.find(name='in3'))
         in3.select_by_visible_text('4')
+
+        in4 = Select(self.find(name='in4'))
         in4.select_by_visible_text('4')
         in4.select_by_visible_text('5')
         in4.select_by_visible_text('6')
-        in5.send_keys('path')
-        in6.send_keys('five!' * 32)
+
+        self.find(name='in5').send_keys('path')
+        self.find(name='in6').send_keys('five!' * 32)
 
     def test_save(self):
         """
@@ -149,6 +147,7 @@ class Lab2Test(BaseSeleniumTest):
 
         # Fill data and send post
         self.fill_data()
+        assert 'disabled' not in self.find(id='save').get_attribute('class')
 
         self.find(id='save').click()
         assert 'saved' in self.driver.page_source.lower()
@@ -173,7 +172,7 @@ class Lab2Test(BaseSeleniumTest):
 
         assert in1.get_attribute('value') == ''
         assert not in2.get_attribute('checked')
-        assert in3.all_selected_options.pop().text == 'something'
+        assert in3.all_selected_options[0].text == 'something'
         assert in4.all_selected_options == []
         assert in6.text == ''
 
