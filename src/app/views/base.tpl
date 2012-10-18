@@ -23,6 +23,10 @@
             -moz-border-radius: 3px;
             border-radius: 3px;
         }
+
+        .label-light {
+            opacity: 0.7;
+        }
     </style>
 </head>
 
