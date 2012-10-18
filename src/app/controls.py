@@ -67,7 +67,8 @@ def lab2saved():
 def lab3():
     user = get_user()
     if user is not None:
-        return template('lab3logged', {})
+        m = Message.objects._objects
+        return template('lab3logged', dict(messages=m))
     else:
         return template('lab3', {})
 
@@ -77,12 +78,15 @@ def lab3post():
     user = get_user()
     if user is not None:
         message = request.POST['message']
-        Message.objects.add(user, message)
+        Message.objects.create(user, message)
+    redirect('/lab3/')
 
 
 @route('/lab3/login/')
 @view('lab3login')
 def lab3login():
+    if get_user():
+        redirect('/lab3/')
     return dict(username='', error=False)
 
 
@@ -114,6 +118,8 @@ def lab3logout():
 @route('/lab3/signup/')
 @view('lab3signup')
 def lab3signup():
+    if get_user():
+        redirect('/lab3/')
     return dict(email='', username='', error='')
 
 
@@ -126,10 +132,16 @@ def lab3signup():
     error = False
     if email and username and password:
         if not User.objects.find(name=username):
-            User.objects.add(email, username, password)
+            User.objects.create(email, username, password)
             redirect("/lab3/login/")
     else:
         error = True
     return dict(email=email, username=username, error=error)
 
-User.objects.add('', 'B7W', 'pass')
+#TODO: remove debug data
+user_b7w = User('', 'B7W', 'pass')
+user_test = User('', 'Test', 'pass')
+User.objects.add(user_b7w)
+User.objects.add(user_test)
+Message.objects.create(user_b7w, "Some message #tag #new @B7W")
+Message.objects.create(user_test, "One more message #post #null @None")

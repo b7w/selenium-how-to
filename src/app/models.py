@@ -1,37 +1,41 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime
 import re
 
-class UserManager:
-    def __init__(self):
-        self.objects = []
+class ManagerBase:
+    def __init__(self, modelCls):
+        #: :type: class
+        self._modelCls = modelCls
+        #: :type: modelCls
+        self._objects = []
 
-    def add(self, *args, **kwargs):
-        """
-        :type user: User
-        """
-        self.objects.append(User(*args, **kwargs))
+    def create(self, *args, **kwargs):
+        self._objects.append(self._modelCls(*args, **kwargs))
 
-    def find(self, name=None, session=None):
-        """
-        :type name: str
-        :type session: str
-        :rtype: User
-        """
-        for user in self.objects:
-            if name and user.name == name:
-                return user
-            if session and user.session == session:
-                return user
+    def add(self, user):
+        self._objects.append(user)
+
+    def find(self, **kwargs):
+        for user in self._objects:
+            for key, val in kwargs.items():
+                if hasattr(user, key) and getattr(user, key) == val:
+                    return user
+
+    def filter(self, **kwargs):
+        tmp = []
+        for user in self._objects:
+            for key, val in kwargs.items():
+                if hasattr(user, key) and getattr(user, key) == val:
+                    tmp.append(user)
+        return tmp
 
     def all(self):
-        """
-        :rtype: list of User
-        """
-        return self.objects
+        return self._objects
 
 
 class User:
-    objects = UserManager()
+    #: :type: ManagerBase
+    objects = None
 
     def __init__(self, email, name, password):
         self.session = ""
@@ -51,20 +55,12 @@ class User:
     def __repr__(self):
         return '<User {0}>'.format(self.name)
 
-
-class MessageManager:
-    def __init__(self):
-        self.objects = []
-
-    def add(self, *args, **kwargs):
-        """
-        :type message: Message
-        """
-        self.objects.append(Message(*args, **kwargs))
+User.objects = ManagerBase(User)
 
 
 class Message:
-    objects = MessageManager()
+    #: :type: ManagerBase
+    objects = None
 
     def __init__(self, user, message):
         """
@@ -73,8 +69,11 @@ class Message:
         """
         self.message = message
         self.owner = user
-        self.users = re.findall(r'#\w+', message)
-        self.tags = re.findall(r'@\w+', message)
+        self.users = re.findall(r'@(\w+)', message)
+        self.tags = re.findall(r'#(\w+)', message)
+        self.time = datetime.now()
 
     def __repr__(self):
-        return '<Message {0}, {0}>'.format(self.owner, self.message)
+        return '<Message {0}, "{1}">'.format(self.owner.name, self.message)
+
+Message.objects = ManagerBase(Message)
