@@ -65,21 +65,44 @@ def lab2saved():
 @route('/lab3/')
 @view('lab3')
 def lab3():
+    #TODO: REMOVE TEST HOOK
+    #user_b7w.session = request.get_cookie(SESSION_NAME)
     user = get_user()
     if user is not None:
-        m = Message.objects._objects
-        return template('lab3logged', dict(messages=m))
+        count = len(Message.objects.filter(lambda m: user in m.users_notify))
+        msgs = Message.objects.filter(lambda m: user in m.users, owner=user)
+        return template('lab3logged', dict(user=user, messages=msgs, newsCount=count))
     else:
         return template('lab3', {})
 
 
-@route('/lab3/post/', method='POST')
+@route('/lab3/message/create/', method='POST')
 def lab3post():
     user = get_user()
     if user is not None:
         message = request.POST['message']
-        Message.objects.create(user, message)
-    redirect('/lab3/')
+        if message:
+            Message.objects.create(user, message)
+        redirect('/lab3/')
+    else:
+        redirect('/lab3/login/')
+
+
+@route('/lab3/message/<type>/<id>/', method='GET')
+def lab3get(type, id):
+    """
+    :type type: str
+    """
+    user = get_user()
+    id = int(id)
+    if user is not None:
+        if type == 'read':
+            Message.objects.find(id=id).users_notify.remove(user)
+        elif type == 'remove':
+            Message.objects.remove(id=id)
+        redirect('/lab3/')
+    else:
+        redirect('/lab3/login/')
 
 
 @route('/lab3/login/')
@@ -143,5 +166,5 @@ user_b7w = User('', 'B7W', 'pass')
 user_test = User('', 'Test', 'pass')
 User.objects.add(user_b7w)
 User.objects.add(user_test)
-Message.objects.create(user_b7w, "Some message #tag #new @B7W")
-Message.objects.create(user_test, "One more message #post #null @None")
+Message.objects.create(user_b7w, "Some message #tag #new")
+Message.objects.create(user_test, "One more message #post @B7W")

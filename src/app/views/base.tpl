@@ -44,6 +44,19 @@
                     <li><a href="/lab3/">Lab 3</a></li>
                     <li><a href="/about/">About</a></li>
                 </ul>
+                %if get('user'):
+                <ul class="nav pull-right">
+                    <li class="user-name">
+                        <a href="#">Hello <strong>{{ user.name }}</strong>
+                            %if newsCount:
+                            <span class="badge badge-success">{{ newsCount }}</span>
+                            %end
+                        </a>
+                    </li>
+                    <li class="divider-vertical"></li>
+                    <li><a href="/lab3/logout/">Log out</a></li>
+                </ul>
+                %end
             </div>
         </div>
     </div>
