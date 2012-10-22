@@ -4,6 +4,7 @@ import unittest
 import conf
 
 from selenium import webdriver
+from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 
 
@@ -30,18 +31,21 @@ class BaseSeleniumTest(unittest.TestCase):
         pass
 
     def _find_element(self, func, id=None, xpath=None, cls=None, name=None, tag=None, css=None):
-        if id:
-            return func(by=By.ID, value=id)
-        elif cls:
-            return func(by=By.XPATH, value=cls)
-        elif xpath:
-            return func(by=By.CLASS_NAME, value=xpath)
-        elif name:
-            return func(by=By.NAME, value=name)
-        elif tag:
-            return func(by=By.TAG_NAME, value=tag)
-        elif css:
-            return func(by=By.CSS_SELECTOR, value=css)
+        try:
+            if id:
+                return func(by=By.ID, value=id)
+            elif cls:
+                return func(by=By.XPATH, value=cls)
+            elif xpath:
+                return func(by=By.CLASS_NAME, value=xpath)
+            elif name:
+                return func(by=By.NAME, value=name)
+            elif tag:
+                return func(by=By.TAG_NAME, value=tag)
+            elif css:
+                return func(by=By.CSS_SELECTOR, value=css)
+        except NoSuchElementException:
+            pass
 
     def find(self, **kwargs):
         """
@@ -53,7 +57,7 @@ class BaseSeleniumTest(unittest.TestCase):
 
     def find_all(self, **kwargs):
         """
-        :rtype: list of selenium.webdriver.remote.webelement.WebElement
+        :rtype: list of selenium.webdriver.remote.webelement.WebElement or None
         """
         if len(kwargs) != 1:
             raise ValueError("Only one key argument allowed")
@@ -61,7 +65,7 @@ class BaseSeleniumTest(unittest.TestCase):
 
     def assertTitle(self, part):
         """
-        Assert that `part` in self.driver.title.lower()
+        Assert that `part` in self.driver.title.lower() or None
         """
         assert part in self.driver.title.lower()
 
