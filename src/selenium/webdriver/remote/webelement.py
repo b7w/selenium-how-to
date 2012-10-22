@@ -22,7 +22,7 @@ import base64
 
 
 from .command import Command
-from selenium.common.exceptions import WebDriverException 
+from selenium.common.exceptions import WebDriverException
 from selenium.common.exceptions import InvalidSelectorException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -44,7 +44,11 @@ class WebElement(object):
 
     @property
     def text(self):
-        """Gets the text of the element."""
+        """
+        Gets the text of the element.
+
+        :rtype: str
+        """
         return self._execute(Command.GET_ELEMENT_TEXT)['value']
 
     def click(self):
@@ -60,7 +64,11 @@ class WebElement(object):
         self._execute(Command.CLEAR_ELEMENT)
 
     def get_attribute(self, name):
-        """Gets the attribute value."""
+        """
+        Gets the attribute value.
+
+        :rtype: str
+        """
         resp = self._execute(Command.GET_ELEMENT_ATTRIBUTE, {'name': name})
         attributeValue = ''
         if resp['value'] is None:
@@ -207,14 +215,14 @@ class WebElement(object):
     def find_element(self, by=By.ID, value=None):
         if isinstance(by, tuple) or isinstance(value, int) or value==None:
             raise InvalidSelectorException("Invalid locator values passed in")
-        
+
         return self._execute(Command.FIND_CHILD_ELEMENT,
                              {"using": by, "value": value})['value']
 
     def find_elements(self, by=By.ID, value=None):
         if isinstance(by, tuple) or isinstance(value, int) or value==None:
             raise InvalidSelectorException("Invalid locator values passed in")
-        
+
         return self._execute(Command.FIND_CHILD_ELEMENTS,
                              {"using": by, "value": value})['value']
 
@@ -224,7 +232,7 @@ class WebElement(object):
         zipped.write(filename, os.path.split(filename)[1])
         zipped.close()
         try:
-            return self._execute(Command.UPLOAD_FILE, 
+            return self._execute(Command.UPLOAD_FILE,
                             {'file': base64.encodestring(fp.getvalue())})['value']
         except WebDriverException as e:
             if "Unrecognized command: POST" in e.__str__():

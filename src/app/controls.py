@@ -168,9 +168,9 @@ def lab3signup():
     return dict(email=email, username=username, errors=errors)
 
 #TODO: remove debug data
-user_b7w = User('', 'B7W', 'pass')
 user_test = User('', 'Test', 'pass')
-User.objects.add(user_b7w)
+user_test2 = User('', 'Test2', 'pass')
 User.objects.add(user_test)
-Message.objects.create(user_b7w, "Some message #tag #new")
-Message.objects.create(user_test, "One more message #post @B7W")
+User.objects.add(user_test2)
+Message.objects.create(user_test, "Some message #tag #new")
+Message.objects.create(user_test2, "One more message #post @Test")

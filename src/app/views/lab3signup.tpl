@@ -3,7 +3,7 @@
     <legend>New to Selenium, Sign up!</legend>
 
     %if errors:
-    <div class="alert alert-error">
+    <div id="errors" class="alert alert-error">
         %for error in errors:
         <a class="close" data-dismiss="alert" href="#">×</a>{{ error }}<br>
         %end
@@ -14,7 +14,7 @@
         <input type="text" id="email" class="span12" name="email" value="{{ email }}" placeholder="Email">
         <input type="text" id="username" class="span12" name="username" value="{{ username }}" placeholder="Username">
         <input type="password" id="password" class="span12" name="password" placeholder="Password">
-        <button type="submit" name="submit" class="btn btn-info btn-block">Sign up</button>
+        <button type="submit" id="submit" class="btn btn-info btn-block">Sign up</button>
     </form>
 </div>
 %end
