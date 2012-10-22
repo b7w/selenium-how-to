@@ -45,7 +45,7 @@
                     <li><a href="/about/">About</a></li>
                 </ul>
                 %if get('user'):
-                <ul class="nav pull-right">
+                <ul id="user-info" class="nav pull-right">
                     <li class="user-name">
                         <a href="#">Hello <strong>{{ user.name }}</strong>
                             %if newsCount:
@@ -88,7 +88,7 @@
 </script>
 
 % if defined('script'):
-%script()
+    %script()
 % end
 
 </body>
