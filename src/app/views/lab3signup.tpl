@@ -2,9 +2,11 @@
 <div class="span6 offset3 well" style="padding: 16px 32px;">
     <legend>New to Selenium, Sign up!</legend>
 
-    %if error:
+    %if errors:
     <div class="alert alert-error">
-        <a class="close" data-dismiss="alert" href="#">×</a>Please enter valid email, username and password
+        %for error in errors:
+        <a class="close" data-dismiss="alert" href="#">×</a>{{ error }}<br>
+        %end
     </div>
     %end
 

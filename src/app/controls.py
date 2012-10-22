@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from .import bottle
+import re
 from app.models import User, Message
 from app.utils import authenticate, logout, login, SESSION_NAME, redirect, get_user
 from .bottle import route, static_file, view, request, template
@@ -143,7 +144,7 @@ def lab3logout():
 def lab3signup():
     if get_user():
         redirect('/lab3/')
-    return dict(email='', username='', error='')
+    return dict(email='', username='', errors=[])
 
 
 @route('/lab3/signup/', method='POST')
@@ -152,14 +153,19 @@ def lab3signup():
     email = request.POST['email']
     username = request.POST['username']
     password = request.POST['password']
-    error = False
-    if email and username and password:
-        if not User.objects.find(name=username):
-            User.objects.create(email, username, password)
-            redirect("/lab3/login/")
-    else:
-        error = True
-    return dict(email=email, username=username, error=error)
+    errors = []
+    if not email or not re.match(r'^\w{3,12}@\w{3,8}\.\w{2,3}$', email):
+        errors.append('Invalid email')
+    if not username or not re.match(r'^\w{3,8}$', username):
+        errors.append('Username - 3 latin characters or number')
+    if not password or len(password) < 8:
+        errors.append('Password - 8 characters')
+    if User.objects.find(name=username):
+        errors.append('Such user already registered')
+    if not errors:
+        User.objects.create(email, username, password)
+        redirect("/lab3/login/")
+    return dict(email=email, username=username, errors=errors)
 
 #TODO: remove debug data
 user_b7w = User('', 'B7W', 'pass')
