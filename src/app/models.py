@@ -49,6 +49,9 @@ class ManagerBase:
     def all(self):
         return self._objects
 
+    def clear(self):
+        self._objects = []
+
 
 class User:
     #: :type: ManagerBase
