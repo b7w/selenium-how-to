@@ -154,7 +154,7 @@ def lab3signup():
     username = request.POST['username']
     password = request.POST['password']
     errors = []
-    if not email or not re.match(r'^\w{3,12}@\w{3,8}\.\w{2,3}$', email):
+    if not email or not re.match(r'^\w{3,12}@\w{2,8}\.\w{2,3}$', email):
         errors.append('Invalid email')
     if not username or not re.match(r'^\w{3,8}$', username):
         errors.append('Username - 3 latin characters or number')
@@ -166,6 +166,12 @@ def lab3signup():
         User.objects.create(email, username, password)
         redirect("/lab3/login/")
     return dict(email=email, username=username, errors=errors)
+
+
+@route('/lab3/clear/')
+def lab3clear():
+    User.objects.clear()
+    Message.objects.clear()
 
 #TODO: remove debug data
 user_test = User('', 'Test', 'pass')
