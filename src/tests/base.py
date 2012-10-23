@@ -57,11 +57,11 @@ class BaseSeleniumTest(unittest.TestCase):
 
     def find_all(self, **kwargs):
         """
-        :rtype: list of selenium.webdriver.remote.webelement.WebElement or None
+        :rtype: list of selenium.webdriver.remote.webelement.WebElement
         """
         if len(kwargs) != 1:
             raise ValueError("Only one key argument allowed")
-        return self._find_element(self.driver.find_elements, **kwargs)
+        return self._find_element(self.driver.find_elements, **kwargs) or []
 
     def assertTitle(self, part):
         """
