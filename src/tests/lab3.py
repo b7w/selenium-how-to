@@ -34,7 +34,8 @@ class Lab3Test(BaseSeleniumTest):
 
     def test_sign_up(self):
         """
-        Test various sign up data and out messages
+        Test various sign up data and out messages.
+        Add new user.
         """
         self.driver.get(self.base_url + "/lab3/signup/")
         self.assertTitle('sign up')
@@ -75,7 +76,7 @@ class Lab3Test(BaseSeleniumTest):
 
     def test_login(self):
         """
-
+        Test auth and out messages
         """
         self.driver.get(self.base_url + "/lab3/login/")
         self.assertTitle('sign in')
@@ -92,7 +93,8 @@ class Lab3Test(BaseSeleniumTest):
         assert self.find(id='username').get_attribute('value') == self.USER_FIRST
         assert self.find(id='password').get_attribute('value') == ''
 
-        assert 'password' in self.find(id='errors').text.lower()
+        # check error message
+        assert 'incorrect' in self.find(id='errors').text.lower()
 
         self.registerUser(self.USER_FIRST + '@ya.ru', self.USER_FIRST, self.PASSWORD)
         self.assertTitle('sign in')
