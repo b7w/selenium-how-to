@@ -12,23 +12,34 @@ class Lab3Test(BaseSeleniumTest):
     USER_SECOND = 'Keks'
     PASSWORD = '1a2b3c4d'
 
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.driver.get(cls.base_url + '/lab3/db/dump/')
+        cls.driver.get(cls.base_url + '/lab3/db/clear/')
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.driver.get(cls.base_url + '/lab/db/load/')
+        super().tearDownClass()
+
     def setUp(self):
         super().setUp()
-        self.driver.get(self.base_url + "/lab3/clear/")
+        self.driver.get(self.base_url + '/lab3/db/clear/')
 
     def test_privet_urls(self):
         """
         Test url that accessible only if you authenticated
         """
-        self.driver.get(self.base_url + "/lab3/")
+        self.driver.get(self.base_url + '/lab3/')
         self.assertTitle('lab 3')
-        assert len(self.find_all(css=".btn")) == 2
-        assert self.find(id="user-info") is None
+        assert len(self.find_all(cls='btn')) == 2
+        assert self.find(id='user-info') is None
 
-        self.driver.get(self.base_url + "/lab3/message/read/1/")
+        self.driver.get(self.base_url + '/lab3/message/read/1/')
         self.assertTitle('lab 3')
 
-        self.driver.get(self.base_url + "/lab3/message/remove/1/")
+        self.driver.get(self.base_url + '/lab3/message/remove/1/')
         self.assertTitle('lab 3')
 
 
@@ -78,7 +89,7 @@ class Lab3Test(BaseSeleniumTest):
         """
         Test auth and out messages
         """
-        self.driver.get(self.base_url + "/lab3/login/")
+        self.driver.get(self.base_url + '/lab3/login/')
         self.assertTitle('sign in')
 
         # check clear fields error
@@ -101,11 +112,27 @@ class Lab3Test(BaseSeleniumTest):
         self.loginUser(self.USER_FIRST, self.PASSWORD)
         self.assertTitle('home')
 
+    def test_add_message(self):
+        """
+
+        """
+        self.registerUser(self.USER_FIRST + '@ya.ru', self.USER_FIRST, self.PASSWORD)
+        self.loginUser(self.USER_FIRST, self.PASSWORD)
+        self.assertTitle('home')
+
+        self.find(id='post').send_keys('First message #tag1')
+        self.find(id='submit').click()
+        self.find(id='post').send_keys('Second message #tag1 #tag2')
+        self.find(id='submit').click()
+
+        assert len(self.find_all(cls='message')) == 2, self.find_all(cls='message')
+
+
     def registerUser(self, email, username, password):
         """
         Feel data on 'sign up' page and click 'submit'
         """
-        self.driver.get(self.base_url + "/lab3/signup/")
+        self.driver.get(self.base_url + '/lab3/signup/')
         self.find(id='email').send_keys(email)
         self.find(id='username').send_keys(username)
         self.find(id='password').send_keys(password)
@@ -130,10 +157,6 @@ class Lab3Test(BaseSeleniumTest):
         self.assertTitle('sign up')
         assert filed in self.find(id='errors').text.lower()
 
-    def test_(self):
-        """
-
-        """
 
 if __name__ == '__main__':
     unittest.main()
