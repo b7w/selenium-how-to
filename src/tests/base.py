@@ -35,9 +35,9 @@ class BaseSeleniumTest(unittest.TestCase):
             if id:
                 return func(by=By.ID, value=id)
             elif cls:
-                return func(by=By.XPATH, value=cls)
+                return func(by=By.CLASS_NAME, value=cls)
             elif xpath:
-                return func(by=By.CLASS_NAME, value=xpath)
+                return func(by=By.XPATH, value=xpath)
             elif name:
                 return func(by=By.NAME, value=name)
             elif tag:

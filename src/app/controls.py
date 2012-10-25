@@ -89,7 +89,7 @@ def lab3post():
         redirect('/lab3/login/')
 
 
-@route('/lab3/message/<type>/<id>/', method='GET')
+@route('/lab3/message/<type>/<id>/')
 def lab3get(type, id):
     """
     :type type: str
@@ -168,10 +168,18 @@ def lab3signup():
     return dict(email=email, username=username, errors=errors)
 
 
-@route('/lab3/clear/')
-def lab3clear():
-    User.objects.clear()
-    Message.objects.clear()
+@route('/lab3/db/<type>/')
+def lab3db(type):
+    if type == 'dump':
+        User.objects.dump()
+        Message.objects.dump()
+    elif type == 'load':
+        User.objects.load()
+        Message.objects.load()
+    elif type == 'clear':
+        User.objects.clear()
+        Message.objects.clear()
+
 
 #TODO: remove debug data
 user_test = User('', 'Test', 'pass')
