@@ -3,7 +3,7 @@ from .import bottle
 import re
 from app.models import User, Message
 from app.utils import authenticate, logout, login, SESSION_NAME, redirect, get_user
-from .bottle import route, static_file, view, request, template
+from .bottle import route, static_file, view, request, template, abort
 
 bottle.TEMPLATE_PATH = ['app/views']
 
@@ -66,8 +66,6 @@ def lab2saved():
 @route('/lab3/')
 @view('lab3')
 def lab3():
-    #TODO: REMOVE TEST HOOK
-    #user_b7w.session = request.get_cookie(SESSION_NAME)
     user = get_user()
     if user is not None:
         count = len(Message.objects.filter(lambda m: user in m.users_notify))
@@ -179,12 +177,13 @@ def lab3db(type):
     elif type == 'clear':
         User.objects.clear()
         Message.objects.clear()
-
-
-#TODO: remove debug data
-user_test = User('', 'Test', 'pass')
-user_test2 = User('', 'Test2', 'pass')
-User.objects.add(user_test)
-User.objects.add(user_test2)
-Message.objects.create(user_test, "Some message #tag #new")
-Message.objects.create(user_test2, "One more message #post @Test")
+    elif type == 'test':
+        # Stub! Add some test data to models
+        user_test = User('', 'Test', 'pass')
+        user_test2 = User('', 'Test2', 'pass')
+        User.objects.add(user_test)
+        User.objects.add(user_test2)
+        Message.objects.create(user_test, "Some message #tag #new")
+        Message.objects.create(user_test2, "One more message #post @Test")
+    else:
+        abort(404, 'No such command "dump|load|clear"')

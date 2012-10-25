@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
+import os
 from pickle import dump, load
 import re
 
@@ -22,6 +23,7 @@ class ManagerBase:
         self._dump_file = '../{0}.dump'.format(self._modelCls.__name__.lower())
         #: :type: modelCls
         self._objects = []
+        self.load()
 
     def create(self, *args, **kwargs):
         self._objects.append(self._modelCls(*args, **kwargs))
@@ -65,8 +67,9 @@ class ManagerBase:
         """
         Load data from file 'model class name.dump'
         """
-        with open(self._dump_file, 'rb') as f:
-            self._objects = load(f)
+        if os.path.exists(self._dump_file):
+            with open(self._dump_file, 'rb') as f:
+                self._objects = load(f)
 
 
 class User:
@@ -111,12 +114,12 @@ class Message:
         :type message: str
         """
         self.id = nextId()
-        self.message = message
+        self.message = message.strip()
         self.owner = user
-        user_names = re.findall(r'@(\w+)', message)
+        user_names = re.findall(r'@(\w+)', self.message)
         self.users = [User.objects.find(name=n) for n in user_names]
         self.users_notify = [i for i in self.users]
-        self.tags = re.findall(r'#(\w+)', message)
+        self.tags = re.findall(r'#(\w+)', self.message)
         self.time = datetime.now()
 
     def __hash__(self):
