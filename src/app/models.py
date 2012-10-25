@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
+from pickle import dump, load
 import re
 
 SEQUENCE = 1
@@ -18,6 +19,7 @@ class ManagerBase:
     def __init__(self, modelCls):
         #: :type: class
         self._modelCls = modelCls
+        self._dump_file = '../{0}.dump'.format(self._modelCls.__name__.lower())
         #: :type: modelCls
         self._objects = []
 
@@ -51,6 +53,20 @@ class ManagerBase:
 
     def clear(self):
         self._objects = []
+
+    def dump(self):
+        """
+        Dump data to file 'model class name.dump'
+        """
+        with open(self._dump_file, 'wb') as f:
+            dump(self._objects, f)
+
+    def load(self):
+        """
+        Load data from file 'model class name.dump'
+        """
+        with open(self._dump_file, 'rb') as f:
+            self._objects = load(f)
 
 
 class User:
