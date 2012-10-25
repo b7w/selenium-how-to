@@ -20,7 +20,7 @@ class Lab3Test(BaseSeleniumTest):
 
     @classmethod
     def tearDownClass(cls):
-        cls.driver.get(cls.base_url + '/lab/db/load/')
+        cls.driver.get(cls.base_url + '/lab3/db/load/')
         super().tearDownClass()
 
     def setUp(self):
@@ -114,19 +114,41 @@ class Lab3Test(BaseSeleniumTest):
 
     def test_add_message(self):
         """
-
+        Test posting for yourself, test tags.
         """
+        # make new user
         self.registerUser(self.USER_FIRST + '@ya.ru', self.USER_FIRST, self.PASSWORD)
         self.loginUser(self.USER_FIRST, self.PASSWORD)
         self.assertTitle('home')
 
+        # add2 posts
         self.find(id='post').send_keys('First message #tag1')
         self.find(id='submit').click()
         self.find(id='post').send_keys('Second message #tag1 #tag2')
         self.find(id='submit').click()
 
-        assert len(self.find_all(cls='message')) == 2, self.find_all(cls='message')
+        # check count, unzip and check text
+        assert len(self.find_all(cls='message')) == 2
+        first, second = self.find_all(cls='message-body')
+        assert first.text == 'First message #tag1'
+        assert second.text == 'Second message #tag1 #tag2'
 
+        # check correct user from
+        first, second = self.find_all(css='.message .user-from')
+        assert first.text == 'Mine'
+        assert second.text == 'Mine'
+
+        # get messages #id and check tags count and text
+        first, second = self.find_all(cls='message')
+        css = '#{id} .tags .badge'.format(id=first.get_attribute('id'))
+        assert len(self.find_all(css=css)) == 1
+        assert self.find(css=css).text == 'tag1'
+
+        css = '#{id} .tags .badge'.format(id=second.get_attribute('id'))
+        assert len(self.find_all(css=css)) == 2
+        tag1, tag2 = self.find_all(css=css)
+        assert tag1.text == 'tag1'
+        assert tag2.text == 'tag2'
 
     def registerUser(self, email, username, password):
         """

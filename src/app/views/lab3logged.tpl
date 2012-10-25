@@ -4,7 +4,7 @@
 
     <div id='messages'>
         %for mess in messages:
-        <div id="message{{ mess.id }} message">
+        <div id="message{{ mess.id }}" class="message">
             <div class="pull-right ">
                 %if user in mess.users_notify:
                 <a href="/lab3/message/read/{{ mess.id }}/"><i class="icon-ok" title="Check message as read"></i></a>
@@ -12,21 +12,20 @@
                 <a href="/lab3/message/remove/{{ mess.id }}/"><i class="icon-remove" title="Remove message"></i></a>
             </div>
 
-            <p class="message">{{ mess.message }}</p>
+            <p class="message-body">{{ mess.message }}</p>
 
-            <div>
+            <div class="info-panel">
                 %if user in mess.users_notify:
-                <span class="user-from label label-info">New</span>
+                <span class="label label-info">New</span>
                 %end
                 %if mess.owner == user:
                 <span class="user-from label label-info">Mine</span>
                 %else:
-                <span class="user-mine label label-info">From</span>
+                <span class="user-from label label-success">{{ mess.owner.name }}</span>
                 %end
-                <span class="user label label-success">{{ mess.owner.name }}</span>
                 <span class="time label label">{{ mess.time.strftime('%c') }}</span>
 
-                <div class="pull-right">
+                <div class="tags pull-right">
                     %for tag in mess.tags:
                     <span class="badge badge-info">{{ tag }}</span>
                     %end
@@ -54,19 +53,6 @@
 
 %def script():
 <script type="text/javascript">
-    for (var i = 0; i <= jQuery('.message').size(); i++) {
-        var list = jQuery(jQuery('.message').get(i)).text().split(' ');
-        for (var j = 0; j < list.length; ++j) {
-            if (list[j][0] == '@') {
-                list[j] = '<span class="label label-success label-light">' + list[j] + '</span>';
-            }
-            if (list[j][0] == '#') {
-                list[j] = '<span class="badge badge-info label-light">' + list[j] + '</span>';
-            }
-        }
-        jQuery(jQuery('.message').get(i)).html(list.join(' '));
-    }
-
 </script>
 %end
 

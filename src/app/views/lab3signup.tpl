@@ -5,7 +5,7 @@
     %if errors:
     <div id="errors" class="alert alert-error">
         %for error in errors:
-        <a class="close" data-dismiss="alert" href="#">×</a>{{ error }}<br>
+        {{ error }}<br>
         %end
     </div>
     %end

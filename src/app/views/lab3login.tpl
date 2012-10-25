@@ -4,7 +4,7 @@
 
     %if error:
     <div id="errors" class="alert alert-error">
-        <a class="close" data-dismiss="alert" href="#">×</a>Incorrect Username or Password!
+        Incorrect Username or Password!
     </div>
     %end
 
