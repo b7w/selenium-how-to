@@ -112,16 +112,21 @@ class Lab3Test(BaseSeleniumTest):
         self.loginUser(self.USER_FIRST, self.PASSWORD)
         self.assertTitle('home')
 
+        assert self.find(css='.user-name strong').text == self.USER_FIRST
+        self.find(id='logout').click()
+        assert self.find(id='user-info') is None
+
     def test_add_message(self):
         """
         Test posting for yourself, test tags.
         """
         # make new user
         self.registerUser(self.USER_FIRST + '@ya.ru', self.USER_FIRST, self.PASSWORD)
+        self.assertTitle('sign in')
         self.loginUser(self.USER_FIRST, self.PASSWORD)
         self.assertTitle('home')
 
-        # add2 posts
+        # add 2 posts
         self.find(id='post').send_keys('First message #tag1')
         self.find(id='submit').click()
         self.find(id='post').send_keys('Second message #tag1 #tag2')
@@ -150,6 +155,46 @@ class Lab3Test(BaseSeleniumTest):
         assert tag1.text == 'tag1'
         assert tag2.text == 'tag2'
 
+    def test_message_notification(self):
+        """
+        Test message posting between users.
+        Set message as read. Delete message.
+        """
+        # make 2 new users
+        self.registerUser(self.USER_FIRST + '@ya.ru', self.USER_FIRST, self.PASSWORD)
+        self.assertTitle('sign in')
+        self.registerUser(self.USER_SECOND + '@ya.ru', self.USER_SECOND, self.PASSWORD)
+        self.assertTitle('sign in')
+
+        self.loginUser(self.USER_FIRST, self.PASSWORD)
+        self.assertTitle('home')
+
+        # send post to second user
+        hello = 'Hello @{user}'.format(user=self.USER_SECOND)
+        self.find(id='post').send_keys(hello)
+        self.find(id='submit').click()
+
+        # login second user
+        self.find(id='logout').click()
+        assert self.find(id='user-info') is None
+        self.loginUser(self.USER_SECOND, self.PASSWORD)
+        self.assertTitle('home')
+
+        # notification count and message
+        assert self.find(css='#user-info .badge').text == '1'
+        assert len(self.find_all(cls='message')) == 1
+        assert self.find(cls='message-body').text == hello
+        assert self.find(css='.message .user-from').text == self.USER_FIRST
+
+        # set message as read
+        self.find(css='.message .icon-ok').click()
+        assert self.find(css='#user-info .badge') is None
+        assert len(self.find_all(cls='message')) == 1
+
+        # remove message
+        self.find(css='.message .icon-remove').click()
+        assert len(self.find_all(cls='message')) == 0
+
     def registerUser(self, email, username, password):
         """
         Feel data on 'sign up' page and click 'submit'
@@ -164,6 +209,7 @@ class Lab3Test(BaseSeleniumTest):
         """
         Feel data on 'sign in' page and click 'submit'
         """
+        self.driver.get(self.base_url + '/lab3/login/')
         self.find(id='username').send_keys(username)
         self.find(id='password').send_keys(password)
         self.find(id='submit').click()
