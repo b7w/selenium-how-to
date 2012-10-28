@@ -54,7 +54,7 @@
                         </a>
                     </li>
                     <li class="divider-vertical"></li>
-                    <li><a href="/lab3/logout/">Log out</a></li>
+                    <li><a id="logout" href="/lab3/logout/">Log out</a></li>
                 </ul>
                 %end
             </div>
