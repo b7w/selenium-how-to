@@ -66,17 +66,16 @@ class Lab3Test(BaseSeleniumTest):
         assert self.find(id='username').get_attribute('value') == 'Keks'
 
         # check field errors
-        self.assertFieldErrors('email', 'email@dom.s')
-        self.assertFieldErrors('email', 'email@dom.long')
-        self.assertFieldErrors('email', '$email@dom.ru')
+        self.assertFieldErrors('email', 'email@d.s')
+        self.assertFieldErrors('email', 'email@domain.long')
+        self.assertFieldErrors('email', '$email%dom.ru')
         self.assertFieldErrors('email', 'email_too_long@dom.ru')
 
         self.assertFieldErrors('username', 'BW')
         self.assertFieldErrors('username', 'B&W')
-        self.assertFieldErrors('username', 'B7W' * 4)
+        self.assertFieldErrors('username', 'B7W' * 8)
 
         self.assertFieldErrors('password', '123')
-        self.assertFieldErrors('password', '123456')
 
         # new user
         self.registerUser(self.USER_FIRST + '@ya.ru', self.USER_FIRST, self.PASSWORD)
@@ -214,16 +213,16 @@ class Lab3Test(BaseSeleniumTest):
         self.find(id='password').send_keys(password)
         self.find(id='submit').click()
 
-    def assertFieldErrors(self, filed, data):
+    def assertFieldErrors(self, filed_id, data):
         """
-        Clear and send `data to `field`, submit.
-        Assert that #errors have `field` in body
+        Clear and send `data to `filed_id`, submit.
+        Assert that #errors have `filed_id` in body
         """
-        self.find(id=filed).clear()
-        self.find(id=filed).send_keys(data)
+        self.find(id=filed_id).clear()
+        self.find(id=filed_id).send_keys(data)
         self.find(id='submit').click()
         self.assertTitle('sign up')
-        assert filed in self.find(id='errors').text.lower()
+        assert filed_id in self.find(id='errors').text.lower()
 
 
 if __name__ == '__main__':
