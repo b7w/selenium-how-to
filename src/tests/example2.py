@@ -2,10 +2,10 @@
 import unittest
 from selenium.webdriver.support.select import Select
 
-from tests.base import BaseSeleniumTest
+from tests.base import BaseSeleniumTestCase
 
 
-class Lab2Test(BaseSeleniumTest):
+class Example2TestCase(BaseSeleniumTestCase):
     name = 'Test example 2'
 
     def test_input1(self):

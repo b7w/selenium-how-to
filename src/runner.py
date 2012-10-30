@@ -8,7 +8,7 @@ from unittest import TestLoader, TextTestRunner, TestSuite
 
 import conf
 from app.bottle import load, run
-from tests.base import BaseSeleniumTest
+from tests.base import BaseSeleniumTestCase
 
 
 class Application(Frame):
@@ -63,7 +63,7 @@ class Application(Frame):
                 for cls_name in dir(test):
                     if not cls_name.startswith('_'):
                         cls = getattr(test, cls_name)
-                        if isclass(cls) and cls != BaseSeleniumTest and issubclass(cls, BaseSeleniumTest):
+                        if isclass(cls) and cls != BaseSeleniumTestCase and issubclass(cls, BaseSeleniumTestCase):
                             tests.append(cls)
         return tests
 

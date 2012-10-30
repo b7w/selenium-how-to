@@ -2,10 +2,10 @@
 
 import unittest
 
-from tests.base import BaseSeleniumTest
+from tests.base import BaseSeleniumTestCase
 
 
-class Lab3Test(BaseSeleniumTest):
+class Example3TestCase(BaseSeleniumTestCase):
     name = 'Test example 3'
 
     USER_FIRST = 'B7W'
