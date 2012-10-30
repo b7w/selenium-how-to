@@ -4,6 +4,7 @@ import unittest
 import conf
 
 from selenium import webdriver
+from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 
 
@@ -30,18 +31,21 @@ class BaseSeleniumTest(unittest.TestCase):
         pass
 
     def _find_element(self, func, id=None, xpath=None, cls=None, name=None, tag=None, css=None):
-        if id:
-            return func(by=By.ID, value=id)
-        elif cls:
-            return func(by=By.XPATH, value=cls)
-        elif xpath:
-            return func(by=By.CLASS_NAME, value=xpath)
-        elif name:
-            return func(by=By.NAME, value=name)
-        elif tag:
-            return func(by=By.TAG_NAME, value=tag)
-        elif css:
-            return func(by=By.CSS_SELECTOR, value=css)
+        try:
+            if id:
+                return func(by=By.ID, value=id)
+            elif cls:
+                return func(by=By.CLASS_NAME, value=cls)
+            elif xpath:
+                return func(by=By.XPATH, value=xpath)
+            elif name:
+                return func(by=By.NAME, value=name)
+            elif tag:
+                return func(by=By.TAG_NAME, value=tag)
+            elif css:
+                return func(by=By.CSS_SELECTOR, value=css)
+        except NoSuchElementException:
+            pass
 
     def find(self, **kwargs):
         """
@@ -57,11 +61,11 @@ class BaseSeleniumTest(unittest.TestCase):
         """
         if len(kwargs) != 1:
             raise ValueError("Only one key argument allowed")
-        return self._find_element(self.driver.find_elements, **kwargs)
+        return self._find_element(self.driver.find_elements, **kwargs) or []
 
     def assertTitle(self, part):
         """
-        Assert that `part` in self.driver.title.lower()
+        Assert that `part` in self.driver.title.lower() or None
         """
         assert part in self.driver.title.lower()
 

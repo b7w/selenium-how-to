@@ -6,15 +6,15 @@ from tests.base import BaseSeleniumTest
 
 
 class Lab2Test(BaseSeleniumTest):
-    name = 'Test lab 2'
+    name = 'Test example 2'
 
     def test_input1(self):
         """
         Test text input and checkbox
         """
         # Open FireFox and Load page
-        self.driver.get(self.base_url + '/lab2/')
-        self.assertTitle('lab 2')
+        self.driver.get(self.base_url + '/example2/')
+        self.assertTitle('example 2')
 
         in1 = self.find(name='in1')
         in2 = self.find(name='in2')
@@ -52,8 +52,8 @@ class Lab2Test(BaseSeleniumTest):
         Test select and malty select
         """
         # Open FireFox and Load page
-        self.driver.get(self.base_url + '/lab2/')
-        self.assertTitle('lab 2')
+        self.driver.get(self.base_url + '/example2/')
+        self.assertTitle('example 2')
 
         in3 = Select(self.find(name='in3'))
         in4 = Select(self.find(name='in4'))
@@ -90,8 +90,8 @@ class Lab2Test(BaseSeleniumTest):
         Test file input and text area.
         """
         # Open FireFox and Load page
-        self.driver.get(self.base_url + '/lab2/')
-        self.assertTitle('lab 2')
+        self.driver.get(self.base_url + '/example2/')
+        self.assertTitle('example 2')
 
         # test file input
         self.assertProgress('progress3', 0)
@@ -142,8 +142,8 @@ class Lab2Test(BaseSeleniumTest):
         """
 
         """
-        self.driver.get(self.base_url + '/lab2/')
-        self.assertTitle('lab 2')
+        self.driver.get(self.base_url + '/example2/')
+        self.assertTitle('example 2')
 
         # Fill data and send post
         self.fill_data()
@@ -156,8 +156,8 @@ class Lab2Test(BaseSeleniumTest):
         """
         Add some data and than cancel it and check that all inputs are clean
         """
-        self.driver.get(self.base_url + '/lab2/')
-        self.assertTitle('lab 2')
+        self.driver.get(self.base_url + '/example2/')
+        self.assertTitle('example 2')
 
         # Fill data and send post
         self.fill_data()

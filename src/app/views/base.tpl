@@ -23,6 +23,10 @@
             -moz-border-radius: 3px;
             border-radius: 3px;
         }
+
+        .exampleel-light {
+            opacity: 0.7;
+        }
     </style>
 </head>
 
@@ -35,11 +39,24 @@
 
             <div class="nav-collapse collapse">
                 <ul class="nav">
-                    <li><a href="/lab1/">Lab 1</a></li>
-                    <li><a href="/lab2/">Lab 2</a></li>
-                    <li><a href="/lab3/">Lab 3</a></li>
+                    <li><a href="/example1/">Example 1</a></li>
+                    <li><a href="/example2/">Example 2</a></li>
+                    <li><a href="/example3/">Example 3</a></li>
                     <li><a href="/about/">About</a></li>
                 </ul>
+                %if get('user'):
+                <ul id="user-info" class="nav pull-right">
+                    <li class="user-name">
+                        <a href="#">Hello <strong>{{ user.name }}</strong>
+                            %if newsCount:
+                            <span class="badge badge-success">{{ newsCount }}</span>
+                            %end
+                        </a>
+                    </li>
+                    <li class="divider-vertical"></li>
+                    <li><a id="logout" href="/example3/logout/">Log out</a></li>
+                </ul>
+                %end
             </div>
         </div>
     </div>
@@ -71,7 +88,7 @@
 </script>
 
 % if defined('script'):
-%script()
+    %script()
 % end
 
 </body>
