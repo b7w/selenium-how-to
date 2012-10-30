@@ -31,10 +31,10 @@ Or just run *python runner.py* - simle gui app. *Need tkinter lib on linux.*
 -------------
 
 [docs/tests/base.md](https://bitbucket.org/B7W/seleniumhowto/src/default/docs/tests/base.md)
- - абстрактный тестоый случай
+ - абстрактный тестовый случай
 
 [docs/tests/example1.md](https://bitbucket.org/B7W/seleniumhowto/src/default/docs/tests/example1.md)
- - обход ссылкок на странице
+ - обход ссылок на странице
 
 [docs/tests/example2.md](https://bitbucket.org/B7W/seleniumhowto/src/default/docs/tests/example2.md)
  - работа с базовыми контролами
