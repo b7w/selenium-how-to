@@ -3,8 +3,7 @@ syntax: regexp
 __pycache__
 \.pyc
 \.pyo
-\.dump
 
 \.idea/
 ^tmp/
-^result\.txt
+^out/

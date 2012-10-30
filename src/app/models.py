@@ -20,7 +20,7 @@ class ManagerBase:
     def __init__(self, modelCls):
         #: :type: class
         self._modelCls = modelCls
-        self._dump_file = '../{0}.dump'.format(self._modelCls.__name__.lower())
+        self._dump_file = '../out/{0}.dump'.format(self._modelCls.__name__.lower())
         #: :type: modelCls
         self._objects = []
         self.load()
