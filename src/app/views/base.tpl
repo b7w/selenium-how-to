@@ -35,7 +35,7 @@
 <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
         <div class="container">
-            <a class="brand" href="#">Selenium test samples</a>
+            <a class="brand" href="#">Selenium HowTo</a>
 
             <div class="nav-collapse collapse">
                 <ul class="nav">

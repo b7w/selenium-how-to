@@ -11,4 +11,4 @@ PYTHON_PATH = 'C:/Python33/python.exe'
 
 RESULT_ENABLE = True
 
-RESULT_PATH = '../result.txt'
+RESULT_PATH = '../out/result.txt'
