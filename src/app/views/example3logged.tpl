@@ -7,9 +7,9 @@
         <div id="message{{ mess.id }}" class="message">
             <div class="pull-right ">
                 %if user in mess.users_notify:
-                <a href="/lab3/message/read/{{ mess.id }}/"><i class="icon-ok" title="Check message as read"></i></a>
+                <a href="/example3/message/read/{{ mess.id }}/"><i class="icon-ok" title="Check message as read"></i></a>
                 %end
-                <a href="/lab3/message/remove/{{ mess.id }}/"><i class="icon-remove" title="Remove message"></i></a>
+                <a href="/example3/message/remove/{{ mess.id }}/"><i class="icon-remove" title="Remove message"></i></a>
             </div>
 
             <p class="message-body">{{ mess.message }}</p>
@@ -41,7 +41,7 @@
 <div class="span4 well">
     <h4><i class="icon-pencil"></i> New post</h4>
 
-    <form accept-charset="UTF-8" action="/lab3/message/create/" method="POST">
+    <form accept-charset="UTF-8" action="/example3/message/create/" method="POST">
         <textarea class="span12" id="post" name="message" placeholder="Type in your message" rows="5"></textarea>
         <button class="btn btn-info pull-right" id="submit" type="submit">Post New Message</button>
         <p>
@@ -56,4 +56,4 @@
 </script>
 %end
 
-%rebase base body=body, script=script, title="Lab 3 User home", user=user, newsCount=newsCount
+%rebase base body=body, script=script, title="Example 3 User home", user=user, newsCount=newsCount

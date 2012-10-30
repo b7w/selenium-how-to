@@ -7,15 +7,15 @@ from tests.base import BaseSeleniumTest
 
 
 class Lab1Test(BaseSeleniumTest):
-    name = 'Test lab 1'
+    name = 'Test example 1'
 
     def test_follow_links(self):
         """
         Find all links ( 'a' tag ) with href attribute,
         Get this links.
         """
-        self.driver.get(self.base_url + '/lab1/')
-        self.assertTitle('lab 1')
+        self.driver.get(self.base_url + '/example1/')
+        self.assertTitle('example 1')
 
         elements = self.find_all(css='.row-fluid a[href]')
         links = []
@@ -35,8 +35,8 @@ class Lab1Test(BaseSeleniumTest):
         """
         Check http status code of all css, js, img resources on a page
         """
-        self.driver.get(self.base_url + '/lab1/')
-        self.assertTitle('lab 1')
+        self.driver.get(self.base_url + '/example1/')
+        self.assertTitle('example 1')
 
         for item in self.find_all(css='link[href]'):
             assert self.http_status(item.get_attribute("href")) == 200

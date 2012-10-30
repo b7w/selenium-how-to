@@ -40,7 +40,7 @@
                 <div class="controls">
                     <label class="checkbox">
                         <input name="in2" type="checkbox" id="optionsCheckbox">
-                        Option one is this and that—be sure to include why it's great
+                        Option one is this and thatвЂ”be sure to include why it's great
                     </label>
                 </div>
             </div>
@@ -89,8 +89,8 @@
                 </div>
             </div>
             <div class="controls 2form-actions">
-                <a id="save" href="/lab2/saved/" class="btn disabled">Save</a>
-                <a id="cancel" href="/lab2/" class="btn">Cancel</a>
+                <a id="save" href="/example2/saved/" class="btn disabled">Save</a>
+                <a id="cancel" href="/example2/" class="btn">Cancel</a>
             </div>
         </fieldset>
     </form>
@@ -192,4 +192,4 @@
 </script>
 %end
 
-%rebase base body=body, script=script, title="Lab 2"
+%rebase base body=body, script=script, title="Example 2"

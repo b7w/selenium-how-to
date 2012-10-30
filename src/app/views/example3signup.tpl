@@ -25,4 +25,4 @@
 </script>
 %end
 
-%rebase base body=body, script=script, title="Lab 3 - Sign Up"
+%rebase base body=body, script=script, title="Example 3 - Sign Up"
