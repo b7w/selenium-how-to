@@ -3,17 +3,20 @@
     <p>
         It is simple web application for testing purpose with selenium tool.<br>
         It is written with python <a href="http://bottlepy.org/">bottle</a> mini framework,
-        and twitter <a href="">bootstrap</a> front-end framework.
+        and twitter <a href="http://twitter.github.com/bootstrap/">bootstrap</a> front-end framework.
     </p>
 
     <p>
-        Source code you can find on <a href="https://bitbucket.org/B7W/seleniumhowto">bitbucket.org</a>.
+        Source code you can find on <a href="https://bitbucket.org/B7W/seleniumhowto">bitbucket.org</a>,
+        with <a href="https://bitbucket.org/B7W/seleniumhowto/src/default/docs?at=default">how to</a>.
         Dependencies are already included.<br>
         All code running on python 3. <em>Note, selenium library is ported to third version.</em><br>
     </p>
 
     <p>
-        For all questions you can contact me via email <a href="mailto:black7white@ya.ru">black7white@ya.ru</a>
+        Feel free to contact me via email <a href="mailto:black7white@ya.ru">black7white@ya.ru</a><br>
+        Be not lazy to send bugs to
+        <a href="https://bitbucket.org/B7W/seleniumhowto/issues?status=new&status=open">issues tracker</a>
     </p>
 </div>
 %end
