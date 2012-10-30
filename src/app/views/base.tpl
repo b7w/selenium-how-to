@@ -24,7 +24,7 @@
             border-radius: 3px;
         }
 
-        .label-light {
+        .exampleel-light {
             opacity: 0.7;
         }
     </style>
@@ -39,9 +39,9 @@
 
             <div class="nav-collapse collapse">
                 <ul class="nav">
-                    <li><a href="/lab1/">Lab 1</a></li>
-                    <li><a href="/lab2/">Lab 2</a></li>
-                    <li><a href="/lab3/">Lab 3</a></li>
+                    <li><a href="/example1/">Example 1</a></li>
+                    <li><a href="/example2/">Example 2</a></li>
+                    <li><a href="/example3/">Example 3</a></li>
                     <li><a href="/about/">About</a></li>
                 </ul>
                 %if get('user'):
@@ -54,7 +54,7 @@
                         </a>
                     </li>
                     <li class="divider-vertical"></li>
-                    <li><a id="logout" href="/lab3/logout/">Log out</a></li>
+                    <li><a id="logout" href="/example3/logout/">Log out</a></li>
                 </ul>
                 %end
             </div>

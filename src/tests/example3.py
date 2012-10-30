@@ -6,7 +6,7 @@ from tests.base import BaseSeleniumTest
 
 
 class Lab3Test(BaseSeleniumTest):
-    name = 'Test lab 3'
+    name = 'Test example 3'
 
     USER_FIRST = 'B7W'
     USER_SECOND = 'Keks'
@@ -15,30 +15,30 @@ class Lab3Test(BaseSeleniumTest):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.driver.get(cls.base_url + '/lab3/db/dump/')
-        cls.driver.get(cls.base_url + '/lab3/db/clear/')
+        cls.driver.get(cls.base_url + '/example3/db/dump/')
+        cls.driver.get(cls.base_url + '/example3/db/clear/')
 
     @classmethod
     def tearDownClass(cls):
-        cls.driver.get(cls.base_url + '/lab3/db/load/')
+        cls.driver.get(cls.base_url + '/example3/db/load/')
         super().tearDownClass()
 
     def setUp(self):
         super().setUp()
-        self.driver.get(self.base_url + '/lab3/db/clear/')
+        self.driver.get(self.base_url + '/example3/db/clear/')
 
     def test_privet_urls(self):
         """
         Test url that accessible only if you authenticated
         """
-        self.driver.get(self.base_url + '/lab3/')
-        self.assertTitle('lab 3')
+        self.driver.get(self.base_url + '/example3/')
+        self.assertTitle('example 3')
         assert len(self.find_all(cls='btn')) == 2
         assert self.find(id='user-info') is None
 
-        self.driver.get(self.base_url + '/lab3/message/read/1/')
+        self.driver.get(self.base_url + '/example3/message/read/1/')
         self.assertTitle('sign in')
-        self.driver.get(self.base_url + '/lab3/message/remove/1/')
+        self.driver.get(self.base_url + '/example3/message/remove/1/')
         self.assertTitle('sign in')
 
 
@@ -47,7 +47,7 @@ class Lab3Test(BaseSeleniumTest):
         Test various sign up data and out messages.
         Add new user.
         """
-        self.driver.get(self.base_url + "/lab3/signup/")
+        self.driver.get(self.base_url + "/example3/signup/")
         self.assertTitle('sign up')
 
         # check clear fields errors
@@ -87,7 +87,7 @@ class Lab3Test(BaseSeleniumTest):
         """
         Test auth and out messages
         """
-        self.driver.get(self.base_url + '/lab3/login/')
+        self.driver.get(self.base_url + '/example3/login/')
         self.assertTitle('sign in')
 
         # check clear fields error
@@ -171,7 +171,7 @@ class Lab3Test(BaseSeleniumTest):
         hello = 'Hello @{user}'.format(user=self.USER_SECOND)
         self.find(id='post').send_keys(hello)
         self.find(id='submit').click()
-        self.find(cls='message') is not None
+        assert self.find(cls='message') is not None
 
         # login second user
         self.find(id='logout').click()
@@ -198,7 +198,7 @@ class Lab3Test(BaseSeleniumTest):
         """
         Feel data on 'sign up' page and click 'submit'
         """
-        self.driver.get(self.base_url + '/lab3/signup/')
+        self.driver.get(self.base_url + '/example3/signup/')
         self.find(id='email').send_keys(email)
         self.find(id='username').send_keys(username)
         self.find(id='password').send_keys(password)
@@ -208,7 +208,7 @@ class Lab3Test(BaseSeleniumTest):
         """
         Feel data on 'sign in' page and click 'submit'
         """
-        self.driver.get(self.base_url + '/lab3/login/')
+        self.driver.get(self.base_url + '/example3/login/')
         self.find(id='username').send_keys(username)
         self.find(id='password').send_keys(password)
         self.find(id='submit').click()

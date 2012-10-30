@@ -19,9 +19,9 @@ def static(path):
 @route('/')
 def index():
     """
-    Redirect from root to first lab
+    Redirect from root to first example
     """
-    return redirect('/lab1/')
+    return redirect('/example1/')
 
 
 @route('/about/')
@@ -33,62 +33,62 @@ def about():
     return {}
 
 #
-# Routes for lab 1
+# Routes for example 1
 #
-@route('/lab1/')
-@view('lab1')
-def lab1():
+@route('/example1/')
+@view('example1')
+def example1():
     return {}
 
 
-@route('/lab1/<name:re:\w+>/')
-def lab1pages(name):
+@route('/example1/<name:re:\w+>/')
+def example1pages(name):
     return "<h1>You enter <span class=\"name\" style=\"color: red\">{name}</span> page</h1>".format(name=name)
 
 
 #
-# Routes for lab 2
+# Routes for example 2
 #
-@route('/lab2/')
-@view('lab2')
-def lab2():
+@route('/example2/')
+@view('example2')
+def example2():
     return {}
 
 
-@route('/lab2/saved/')
-def lab2saved():
+@route('/example2/saved/')
+def example2saved():
     return "<h1>Saved</h1>"
 
 
 #
-# Routes for lab 3
+# Routes for example 3
 #
-@route('/lab3/')
-@view('lab3')
-def lab3():
+@route('/example3/')
+@view('example3')
+def example3():
     user = get_user()
     if user is not None:
         count = len(Message.objects.filter(lambda m: user in m.users_notify))
         msgs = Message.objects.filter(lambda m: user in m.users, owner=user)
-        return template('lab3logged', dict(user=user, messages=msgs, newsCount=count))
+        return template('example3logged', dict(user=user, messages=msgs, newsCount=count))
     else:
-        return template('lab3', {})
+        return template('example3', {})
 
 
-@route('/lab3/message/create/', method='POST')
-def lab3post():
+@route('/example3/message/create/', method='POST')
+def example3post():
     user = get_user()
     if user is not None:
         message = request.POST['message']
         if message:
             Message.objects.create(user, message)
-        redirect('/lab3/')
+        redirect('/example3/')
     else:
-        redirect('/lab3/login/')
+        redirect('/example3/login/')
 
 
-@route('/lab3/message/<type>/<id>/')
-def lab3get(type, id):
+@route('/example3/message/<type>/<id>/')
+def example3get(type, id):
     """
     :type type: str
     """
@@ -99,55 +99,55 @@ def lab3get(type, id):
             Message.objects.find(id=id).users_notify.remove(user)
         elif type == 'remove':
             Message.objects.remove(id=id)
-        redirect('/lab3/')
+        redirect('/example3/')
     else:
-        redirect('/lab3/login/')
+        redirect('/example3/login/')
 
 
-@route('/lab3/login/')
-@view('lab3login')
-def lab3login():
+@route('/example3/login/')
+@view('example3login')
+def example3login():
     if get_user():
-        redirect('/lab3/')
+        redirect('/example3/')
     return dict(username='', error=False)
 
 
-@route('/lab3/login/', method='POST')
-@view('lab3login')
-def lab3login():
+@route('/example3/login/', method='POST')
+@view('example3login')
+def example3login():
     username = request.POST['username']
     password = request.POST['password']
     error = False
     user = authenticate(username, password)
     if user:
         login(user)
-        redirect('/lab3/')
+        redirect('/example3/')
     else:
         error = True
     return dict(username=username, error=error)
 
 
-@route('/lab3/logout/')
-def lab3logout():
+@route('/example3/logout/')
+def example3logout():
     session = request.get_cookie(SESSION_NAME)
     if session:
         user = User.objects.find(session=session)
         if user:
             logout(user)
-    redirect('/lab3/')
+    redirect('/example3/')
 
 
-@route('/lab3/signup/')
-@view('lab3signup')
-def lab3signup():
+@route('/example3/signup/')
+@view('example3signup')
+def example3signup():
     if get_user():
-        redirect('/lab3/')
+        redirect('/example3/')
     return dict(email='', username='', errors=[])
 
 
-@route('/lab3/signup/', method='POST')
-@view('lab3signup')
-def lab3signup():
+@route('/example3/signup/', method='POST')
+@view('example3signup')
+def example3signup():
     email = request.POST['email']
     username = request.POST['username']
     password = request.POST['password']
@@ -162,12 +162,12 @@ def lab3signup():
         errors.append('Such user already registered')
     if not errors:
         User.objects.create(email, username, password)
-        redirect("/lab3/login/")
+        redirect("/example3/login/")
     return dict(email=email, username=username, errors=errors)
 
 
-@route('/lab3/db/<type>/')
-def lab3db(type):
+@route('/example3/db/<type>/')
+def example3db(type):
     if type == 'dump':
         User.objects.dump()
         Message.objects.dump()
