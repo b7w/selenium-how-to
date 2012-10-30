@@ -37,10 +37,9 @@ class Lab3Test(BaseSeleniumTest):
         assert self.find(id='user-info') is None
 
         self.driver.get(self.base_url + '/lab3/message/read/1/')
-        self.assertTitle('lab 3')
-
+        self.assertTitle('sign in')
         self.driver.get(self.base_url + '/lab3/message/remove/1/')
-        self.assertTitle('lab 3')
+        self.assertTitle('sign in')
 
 
     def test_sign_up(self):
@@ -172,6 +171,7 @@ class Lab3Test(BaseSeleniumTest):
         hello = 'Hello @{user}'.format(user=self.USER_SECOND)
         self.find(id='post').send_keys(hello)
         self.find(id='submit').click()
+        self.find(cls='message') is not None
 
         # login second user
         self.find(id='logout').click()
