@@ -7,8 +7,7 @@
     </p>
 
     <p>
-        <!--TODO: type real url-->
-        Source code you can find on <a href="https://bitbucket.org/B7W">bitbucket.org</a>.
+        Source code you can find on <a href="https://bitbucket.org/B7W/seleniumhowto">bitbucket.org</a>.
         Dependencies are already included.<br>
         All code running on python 3. <em>Note, selenium library is ported to third version.</em><br>
     </p>
