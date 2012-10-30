@@ -3,10 +3,10 @@ import unittest
 from urllib.parse import urlsplit
 from http.client import HTTPConnection
 
-from tests.base import BaseSeleniumTest
+from tests.base import BaseSeleniumTestCase
 
 
-class Lab1Test(BaseSeleniumTest):
+class Example1TestCase(BaseSeleniumTestCase):
     name = 'Test example 1'
 
     def test_follow_links(self):

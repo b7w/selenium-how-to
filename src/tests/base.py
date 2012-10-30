@@ -8,7 +8,7 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 
 
-class BaseSeleniumTest(unittest.TestCase):
+class BaseSeleniumTestCase(unittest.TestCase):
     """
     You need to extend form this class. And it will be load to UI runner automatic.
     """
