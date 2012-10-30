@@ -38,7 +38,7 @@ class Application(Frame):
 
     def new_Button(self, text, command, column):
         btn = Button(self, text=text, command=command)
-        btn.config(width=8, height=2)
+        btn.config(height=2)
         btn.grid(row=1, column=column)
         return btn
 
