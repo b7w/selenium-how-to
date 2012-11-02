@@ -27,6 +27,9 @@ Or just run *python runner.py* - simle gui app. *Need tkinter lib on linux.*
 [docs/html.md](https://bitbucket.org/B7W/seleniumhowto/src/default/docs/html.md)
  - базовые понятия HTML
 
+[docs/conclusion.md](https://bitbucket.org/B7W/seleniumhowto/src/default/docs/conclusion.md)
+ - заключение
+
 Разбор тестов
 -------------
 
