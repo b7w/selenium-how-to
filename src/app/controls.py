@@ -2,8 +2,8 @@
 from .import bottle
 import re
 from app.models import User, Message
-from app.utils import authenticate, logout, login, SESSION_NAME, redirect, get_user
-from .bottle import route, static_file, view, request, template, abort
+from app.utils import authenticate, logout, login, SESSION_NAME, get_user
+from .bottle import route, static_file, view, request, template, abort, redirect
 
 bottle.TEMPLATE_PATH = ['app/views']
 
@@ -21,7 +21,7 @@ def index():
     """
     Redirect from root to first example
     """
-    return redirect('/example1/')
+    redirect('/example1/')
 
 
 @route('/about/')

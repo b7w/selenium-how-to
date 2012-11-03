@@ -42,11 +42,3 @@ def logout(user):
     """
     response.delete_cookie(SESSION_NAME, path='/')
     user.session = ""
-
-
-def redirect(url):
-    """
-    :type url: str
-    """
-    response.status = 302
-    response.headers['Location'] = url
