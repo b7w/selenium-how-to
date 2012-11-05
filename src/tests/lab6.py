@@ -3,6 +3,7 @@ import unittest
 
 from tests.base import BaseSeleniumTestCase
 
+
 class Lab6TestCase(BaseSeleniumTestCase):
     """
     Открыть http://www.artlebedev.ru/tools/case/ и проверить

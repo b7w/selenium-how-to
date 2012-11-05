@@ -36,7 +36,7 @@ class Lab5TestCase(BaseSeleniumTestCase):
 
         elements = self.find_all(css='a[href]')
         links = []
-        for item in elements[1:4]:
+        for item in elements:
             href = item.get_attribute('href')
             links.append(Tab(href))
 
