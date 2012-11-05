@@ -23,6 +23,7 @@ class BaseSeleniumTestCase(unittest.TestCase):
         cls.driver = webdriver.Firefox()
         # waite if elements not found
         cls.driver.implicitly_wait(0.5)
+        cls.driver.maximize_window()
 
     def setUp(self):
         """
