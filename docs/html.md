@@ -48,8 +48,8 @@ HTML это текстовый документ, подмножество XML. �
 
 Например *jQuery(‘.row-fluid a[href]’)* выведет все ссылки в блоке:
 
-    [a.label /lab1/porta1/, a.label /lab1/donec2/, a.btn /lab1/button1/, a.label /lab1/fusce3/,
-    a.label /lab1/fermentum4/, a.btn /lab1/button2/, a.label /lab1/id5/, a.label /lab1/etiam6/, a.btn /lab1/button3/]
+    [a.label /example1/porta1/, a.label /example1/donec2/, a.btn /example1/button1/, a.label /example1/fusce3/,
+    a.label /example1/fermentum4/, a.btn /example1/button2/, a.label /example1/id5/, a.label /example1/etiam6/, a.btn /example1/button3/]
 
 jQuery - библиотека JavaScript, фокусирующаяся на облегчении получения доступа к элементам страницы.
 Она уже включена в примеры. Параметром вы можете вводить любой css запрос.
