@@ -1,19 +1,14 @@
 Selenium How To
 ===============
 
-It is simple web application for testing purpose with selenium tool [Selenium](http://seleniumhq.org/).
-Plus [how to](https://bitbucket.org/B7W/seleniumhowto/src/default/docs) with explaining of code, in russian.
-It is written with python [bottle](http://bottlepy.org/) mini framework,
-and twitter [bootstrap](http://twitter.github.com/bootstrap/) front-end framework.
+It is simple web application for testing purpose with selenium tool [Selenium](http://seleniumhq.org/). Plus [how to](https://bitbucket.org/B7W/seleniumhowto/src/default/docs) with explaining of code, in russian. It is written with python [bottle](http://bottlepy.org/) mini framework, and twitter [bootstrap](http://twitter.github.com/bootstrap/) front-end framework.
 
-Dependencies are already included. All code running on python 3.
-*Note, selenium library is ported to third version.*
+Dependencies are already included. All code running on python 3. *Note, selenium library is ported to third version.*
 
 Run
 ---
 
-You can esay run web server by calling *cd src*; *python server.py*. And tests *python tests/example[123].py*.
-Or just run *python runner.py* - simle gui app. *Need tkinter lib on linux.*
+You can esay run web server by calling *cd src*; *python server.py*. And tests *python tests/example[123].py*. Or just run *python runner.py* - simle gui app. *Need tkinter lib on linux.*
 
 Описание
 --------
@@ -44,3 +39,9 @@ Or just run *python runner.py* - simle gui app. *Need tkinter lib on linux.*
 
 [docs/tests/example3.md](https://bitbucket.org/B7W/seleniumhowto/src/default/docs/tests/example3.md)
  - некоторое подобие [twitter.com](https://twitter.com)
+
+Лабораторные работы
+-------------------
+
+[docs/labs.md](https://bitbucket.org/B7W/seleniumhowto/src/default/docs/labs.md)
+ - Немного заданий для выполнения
