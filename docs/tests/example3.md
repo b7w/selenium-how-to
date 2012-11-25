@@ -7,7 +7,7 @@
 Так же можно добавлять теги, *#{имя тега}*. Сообщения можно помечать как прочитанные и удалять их.
 Как и у любого ресурса в примере присутствует регистрация и аутентификация.
 
-![example3.png](https://bitbucket.org/B7W/seleniumhowto/raw/default/docs/screens/example2.png)
+![example3.png](https://bitbucket.org/B7W/seleniumhowto/raw/default/docs/screens/example3.png)
 
 База данных
 -----------
