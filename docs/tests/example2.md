@@ -10,6 +10,7 @@
 много-строчное текстовое поле. И две кнопки.
 
 ![example2.png](https://bitbucket.org/B7W/seleniumhowto/raw/default/docs/screens/example2.png)
+_рис. 2_
 
 Реализация
 ----------
