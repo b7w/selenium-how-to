@@ -7,6 +7,11 @@ from tests.base import BaseSeleniumTestCase
 
 
 class Example1TestCase(BaseSeleniumTestCase):
+    """
+    Для первого примера давайте найдем все ссылки из колонок на странице "Example 1" и перейдем по ним.
+    Это все блоки помечены цветом, плюс кнопки.
+    А так же проверим что текст ссылки присутствует на открытых страницах.
+    """
     name = 'Test example 1'
 
     def test_follow_links(self):
