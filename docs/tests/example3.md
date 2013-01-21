@@ -8,6 +8,7 @@
 Как и у любого ресурса в примере присутствует регистрация и аутентификация.
 
 ![example3.png](https://bitbucket.org/B7W/seleniumhowto/raw/default/docs/screens/example3.png)
+_рис. 3_
 
 База данных
 -----------

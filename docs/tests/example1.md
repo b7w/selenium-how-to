@@ -8,6 +8,7 @@
 А так же проверим что текст ссылки присутствует на открытых страницах.
 
 ![example1.png](https://bitbucket.org/B7W/seleniumhowto/raw/default/docs/screens/example1.png)
+_рис. 1_
 
 Реализация
 ----------
