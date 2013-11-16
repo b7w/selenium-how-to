@@ -10,6 +10,13 @@ Run
 
 You can esay run web server by calling *cd src*; *python server.py*. And tests *python tests/example[123].py*. Or just run *python runner.py* - simle gui app. *Need tkinter lib on linux.*
 
+
+Методичка
+---------
+
+Документация ниже, это краткое и неполное изложение методичкого указание находяшегося в [Downloads](https://bitbucket.org/b7w/seleniumhowto/downloads).
+
+
 Описание
 --------
 
