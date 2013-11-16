@@ -16,4 +16,4 @@
 Вы можете выполнить это как домашнее задание.
 
 *Если вы нашли неточности/ошибки или у вас есть вопросы,
-вы можете их задать [тут](https://bitbucket.org/B7W/seleniumhowto/issues?status=new&status=open)*.
+вы можете их задать [тут](https://bitbucket.org/b7w/seleniumhowto/issues?status=new&status=open)*.

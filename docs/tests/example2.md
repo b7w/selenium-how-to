@@ -9,7 +9,7 @@
 Текстовое поле, булевой флажок, выпадающий список, список с множественным выбором, компонент для выбора файла,
 много-строчное текстовое поле. И две кнопки.
 
-![example2.png](https://bitbucket.org/B7W/seleniumhowto/raw/default/docs/screens/example2.png)
+![example2.png](https://bitbucket.org/b7w/seleniumhowto/raw/default/docs/screens/example2.png)
 _рис. 2_
 
 Реализация

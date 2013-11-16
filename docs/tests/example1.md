@@ -7,7 +7,7 @@
 Для первого примера давайте найдем все ссылки из колонок на странице "Example 1" и перейдем по ним. Это все блоки помечены цветом, плюс кнопки.
 А так же проверим что текст ссылки присутствует на открытых страницах.
 
-![example1.png](https://bitbucket.org/B7W/seleniumhowto/raw/default/docs/screens/example1.png)
+![example1.png](https://bitbucket.org/b7w/seleniumhowto/raw/default/docs/screens/example1.png)
 _рис. 1_
 
 Реализация

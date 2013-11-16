@@ -25,7 +25,7 @@
 ---------------
 
 Вы всегда можете задать вопрос по электронной почте [black7white@ya.ru](mailto:black7white@ya.ru).
-Если вы нашли какую-то ошибку, не поленитесь, добавьте ее в [issue tracker](https://bitbucket.org/B7W/seleniumhowto/issues?status=new&status=open).
+Если вы нашли какую-то ошибку, не поленитесь, добавьте ее в [issue tracker](https://bitbucket.org/b7w/seleniumhowto/issues?status=new&status=open).
 
 
 Selenium
