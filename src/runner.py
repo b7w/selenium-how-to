@@ -19,24 +19,23 @@ class Application(Frame):
         self.master.title('Selenium samples runner')
         self.master.wm_iconbitmap(default='app/static/favicon.ico')
         self.pack()
-        self.createWidgets()
+        self.create_widgets()
         self.start_server()
 
-    def createWidgets(self):
+    def create_widgets(self):
         classes = self.get_tests_classes()
 
-        all = lambda: self.run_tests(classes)
-        btn_test_all = self.new_Button('Test all', all, 1)
+        all_tests = lambda: self.run_tests(classes)
+        self.add_button('Test all', all_tests, 1)
 
         def _test(cls):
             return lambda: self.run_tests([cls])
 
-        for i in range(len(classes)):
-            cls = classes[i]
+        for i, cls in enumerate(classes, 2):
             name = self.get_class_name(cls)
-            self.new_Button(name, _test(cls), i + 2)
+            self.add_button(name, _test(cls), i)
 
-    def new_Button(self, text, command, column):
+    def add_button(self, text, command, column):
         btn = Button(self, text=text, command=command)
         btn.config(height=2)
         btn.grid(row=1, column=column)
