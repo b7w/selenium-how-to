@@ -7,8 +7,8 @@
     </p>
 
     <p>
-        Source code you can find on <a href="https://bitbucket.org/B7W/seleniumhowto">bitbucket.org</a>,
-        with <a href="https://bitbucket.org/B7W/seleniumhowto/src/default/docs?at=default">how to</a>.
+        Source code you can find on <a href="https://bitbucket.org/b7w/seleniumhowto">bitbucket.org</a>,
+        with <a href="https://bitbucket.org/b7w/seleniumhowto/src/default/docs?at=default">how to</a>.
         Dependencies are already included.<br>
         All code running on python 3. <em>Note, selenium library is ported to third version.</em><br>
     </p>
@@ -16,7 +16,7 @@
     <p>
         Feel free to contact me via email <a href="mailto:black7white@ya.ru">black7white@ya.ru</a><br>
         Be not lazy to send bugs to
-        <a href="https://bitbucket.org/B7W/seleniumhowto/issues?status=new&status=open">issues tracker</a>
+        <a href="https://bitbucket.org/b7w/seleniumhowto/issues?status=new&status=open">issues tracker</a>
     </p>
 </div>
 %end
