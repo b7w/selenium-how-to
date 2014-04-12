@@ -75,15 +75,15 @@ class Application(Frame):
         server.setDaemon(True)
         server.start()
 
-    def run_tests(self, testCls):
-        def _tests(testCls):
+    def run_tests(self, test_class):
+        def _tests(test_cls):
             self.test_status = True
             with open(conf.RESULT_PATH, mode='w') as output:
                 try:
                     suite = TestSuite()
-                    for testCls in testCls:
-                        subSuite = TestLoader().loadTestsFromTestCase(testCls)
-                        suite.addTest(subSuite)
+                    for cls in test_cls:
+                        sub_suite = TestLoader().loadTestsFromTestCase(cls)
+                        suite.addTest(sub_suite)
 
                     TextTestRunner(stream=output, descriptions=True, verbosity=2, failfast=True).run(suite)
                 except Exception as e:
@@ -98,7 +98,7 @@ class Application(Frame):
         if self.test_status:
             messagebox.showwarning('Tests', 'Some tests already running, wait')
         else:
-            Thread(target=_tests, args=[testCls, ]).start()
+            Thread(target=_tests, args=[test_class, ]).start()
 
 
 try:

@@ -19,7 +19,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
 from .abstract_event_listener import AbstractEventListener
-import collections
 
 
 def _wrap_elements(result, ef_driver):
@@ -44,14 +43,17 @@ class EventFiringWebDriver(object):
          - event_listener : Instance of a class that subclasses AbstractEventListener and implements it fully or partially
         
         Example:
+
+        .. code-block:: python
+
             from selenium.webdriver import Firefox
             from selenium.webdriver.support.events import EventFiringWebDriver, AbstractEventListener
             
             class MyListener(AbstractEventListener):
                 def before_navigate_to(self, url, driver):
-                    print "Before navigate to %s" % url
+                    print("Before navigate to %s" % url)
                 def after_navigate_to(self, url, driver):
-                    print "After navigate to %s" % url
+                    print("After navigate to %s" % url)
             
             driver = Firefox()
             ef_driver = EventFiringWebDriver(driver, MyListener())
@@ -189,7 +191,7 @@ class EventFiringWebDriver(object):
         if hasattr(self._driver, name):
             try:
                 attrib = getattr(self._driver, name)
-                if not isinstance(attrib, collections.Callable):
+                if not callable(attrib):
                     return attrib
             except Exception as e:
                 self._listener.on_exception(e, self._driver)
@@ -314,7 +316,7 @@ class EventFiringWebElement(object):
         if hasattr(self._webelement, name):
             try:
                 attrib = getattr(self._webelement, name)
-                if not isinstance(attrib, collections.Callable):
+                if not callable(attrib):
                     return attrib
             except Exception as e:
                 self._listener.on_exception(e, self._driver)

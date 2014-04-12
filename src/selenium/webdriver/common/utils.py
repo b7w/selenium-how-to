@@ -12,32 +12,55 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+"""
+The Utils methods.
+"""
 import socket
 
 
 def free_port():
-        free_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        free_socket.bind(('127.0.0.1', 0))
-        free_socket.listen(5)
-        port = free_socket.getsockname()[1]
-        free_socket.close()
-        return port
+    """
+    Determines a free port using sockets.
+    """
+    free_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    free_socket.bind(('127.0.0.1', 0))
+    free_socket.listen(5)
+    port = free_socket.getsockname()[1]
+    free_socket.close()
+    return port
 
 def is_connectable(port):
-        """Trys to connect to the server to see if it is running."""
-        try:
-            socket_ = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            socket_.settimeout(1)
-            socket_.connect(("localhost", port))
-            socket_.close()
-            return True
-        except socket.error:
-            return False
+    """
+    Tries to connect to the server at port to see if it is running.
+
+    :Args:
+     - port: The port to connect.
+    """
+    try:
+        socket_ = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        socket_.settimeout(1)
+        socket_.connect(("localhost", port))
+        socket_.close()
+        return True
+    except socket.error:
+        return False
 
 def is_url_connectable(port):
-    import urllib.request, urllib.error, urllib.parse
+    """
+    Tries to connect to the HTTP server at /status path
+    and specified port to see if it responds successfully.
+
+    :Args:
+     - port: The port to connect.
+    """
     try:
-        res = urllib.request.urlopen("http://localhost:%s/status" % port)
+        from urllib import request as url_request
+    except ImportError:
+        import urllib2 as url_request
+
+    try:
+        res = url_request.urlopen("http://localhost:%s/status" % port)
         if res.getcode() == 200:
             return True
         else:
