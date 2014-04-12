@@ -12,82 +12,39 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+from __future__ import with_statement
 
 import base64
 import copy
+import json
 import os
 import re
 import shutil
 import tempfile
 import zipfile
-from io import StringIO
+
+try:
+    from cStringIO import StringIO as BytesIO
+    bytes = str
+    str = unicode
+except ImportError:
+    from io import BytesIO
+
 from xml.dom import minidom
-from distutils import dir_util
 from selenium.webdriver.common.proxy import ProxyType
 from selenium.common.exceptions import WebDriverException
 
 
 WEBDRIVER_EXT = "webdriver.xpi"
+WEBDRIVER_PREFERENCES = "webdriver_prefs.json"
 EXTENSION_NAME = "fxdriver@googlecode.com"
 
+
 class FirefoxProfile(object):
+    ANONYMOUS_PROFILE_NAME = "WEBDRIVER_ANONYMOUS_PROFILE"
+    DEFAULT_PREFERENCES = None
 
-    ANONYMOUS_PROFILE_NAME   = "WEBDRIVER_ANONYMOUS_PROFILE"
-    DEFAULT_PREFERENCES = {
-        "app.update.auto": "false",
-        "app.update.enabled": "false",
-        "browser.download.manager.showWhenStarting": "false",
-        "browser.EULA.override": "true",
-        "browser.EULA.3.accepted": "true",
-        "browser.link.open_external": "2",
-        "browser.link.open_newwindow": "2",
-        "browser.offline": "false",
-        "browser.safebrowsing.enabled": "false",
-        "browser.search.update": "false",
-        "browser.sessionstore.resume_from_crash": "false",
-        "browser.shell.checkDefaultBrowser": "false",
-        "browser.tabs.warnOnClose": "false",
-        "browser.tabs.warnOnOpen": "false",
-        "browser.startup.page": "0",
-        "browser.safebrowsing.malware.enabled": "false",
-        "startup.homepage_welcome_url": "\"about:blank\"",
-        "devtools.errorconsole.enabled": "true",
-        "dom.disable_open_during_load": "false",
-        "extensions.autoDisableScopes" : 10,
-        "extensions.logging.enabled": "true",
-        "extensions.update.enabled": "false",
-        "extensions.update.notifyUser": "false",
-        "network.manage-offline-status": "false",
-        "network.http.max-connections-per-server": "10",
-        "network.http.phishy-userpass-length": "255",
-        "offline-apps.allow_by_default": "true",
-        "prompts.tab_modal.enabled": "false",
-        "security.fileuri.origin_policy": "3",
-        "security.fileuri.strict_origin_policy": "false",
-        "security.warn_entering_secure": "false",
-        "security.warn_entering_secure.show_once": "false",
-        "security.warn_entering_weak": "false",
-        "security.warn_entering_weak.show_once": "false",
-        "security.warn_leaving_secure": "false",
-        "security.warn_leaving_secure.show_once": "false",
-        "security.warn_submit_insecure": "false",
-        "security.warn_viewing_mixed": "false",
-        "security.warn_viewing_mixed.show_once": "false",
-        "signon.rememberSignons": "false",
-        "toolkit.networkmanager.disable": "true",
-        "toolkit.telemetry.enabled": "false",
-        "toolkit.telemetry.prompted": "2",
-        "toolkit.telemetry.rejected": "true",
-        "javascript.options.showInConsole": "true",
-        "browser.dom.window.dump.enabled": "true",
-        "webdriver_accept_untrusted_certs": "true",
-        "webdriver_enable_native_events": "true",
-        "webdriver_assume_untrusted_issuer": "true",
-        "dom.max_script_run_time": "30",
-        }
-
-    def __init__(self,profile_directory=None):
+    def __init__(self, profile_directory=None):
         """
         Initialises a new instance of a Firefox Profile
 
@@ -96,18 +53,25 @@ class FirefoxProfile(object):
            This defaults to None and will create a new
            directory when object is created.
         """
+        if not FirefoxProfile.DEFAULT_PREFERENCES:
+            with open(os.path.join(os.path.dirname(__file__),
+                                   WEBDRIVER_PREFERENCES)) as default_prefs:
+                FirefoxProfile.DEFAULT_PREFERENCES = json.load(default_prefs)
+
         self.default_preferences = copy.deepcopy(
-            FirefoxProfile.DEFAULT_PREFERENCES)
+            FirefoxProfile.DEFAULT_PREFERENCES['mutable'])
+        self.native_events_enabled = True
         self.profile_dir = profile_directory
+        self.tempfolder = None
         if self.profile_dir is None:
             self.profile_dir = self._create_tempfolder()
         else:
-            newprof = os.path.join(tempfile.mkdtemp(),
-                "webdriver-py-profilecopy")
+            self.tempfolder = tempfile.mkdtemp()
+            newprof = os.path.join(self.tempfolder, "webdriver-py-profilecopy")
             shutil.copytree(self.profile_dir, newprof,
-                ignore=shutil.ignore_patterns("parent.lock", "lock", ".parentlock"))
+                            ignore=shutil.ignore_patterns("parent.lock", "lock", ".parentlock"))
             self.profile_dir = newprof
-            self._read_existing_userjs()
+            self._read_existing_userjs(os.path.join(self.profile_dir, "user.js"))
         self.extensionsDir = os.path.join(self.profile_dir, "extensions")
         self.userPrefs = os.path.join(self.profile_dir, "user.js")
 
@@ -116,24 +80,14 @@ class FirefoxProfile(object):
         """
         sets the preference that we want in the profile.
         """
-        clean_value = ''
-        if value is True:
-            clean_value = 'true'
-        elif value is False:
-            clean_value = 'false'
-        elif isinstance(value, str):
-            clean_value = '"%s"' % value
-        elif isinstance(value, str):
-            clean_value = '"%s"' % value
-        else:
-            clean_value = str(int(value))
-
-        self.default_preferences[key] = clean_value
+        self.default_preferences[key] = value
 
     def add_extension(self, extension=WEBDRIVER_EXT):
         self._install_extension(extension)
 
     def update_preferences(self):
+        for key, value in FirefoxProfile.DEFAULT_PREFERENCES['frozen'].items():
+            self.default_preferences[key] = value
         self._write_user_prefs(self.default_preferences)
 
     #Properties
@@ -159,13 +113,18 @@ class FirefoxProfile(object):
         """
         if not isinstance(port, int):
             raise WebDriverException("Port needs to be an integer")
+        try:
+            port = int(port)
+            if port < 1 or port > 65535:
+                raise WebDriverException("Port number must be in the range 1..65535")
+        except (ValueError, TypeError) as e:
+            raise WebDriverException("Port needs to be an integer")
         self._port = port
         self.set_preference("webdriver_firefox_port", self._port)
 
     @property
     def accept_untrusted_certs(self):
-        return self._santise_pref(
-            self.default_preferences["webdriver_accept_untrusted_certs"])
+        return self.default_preferences["webdriver_accept_untrusted_certs"]
 
     @accept_untrusted_certs.setter
     def accept_untrusted_certs(self, value):
@@ -175,7 +134,7 @@ class FirefoxProfile(object):
 
     @property
     def assume_untrusted_cert_issuer(self):
-        return self._santise_pref(self.default_preferences["webdriver_assume_untrusted_issuer"])
+        return self.default_preferences["webdriver_assume_untrusted_issuer"]
 
     @assume_untrusted_cert_issuer.setter
     def assume_untrusted_cert_issuer(self, value):
@@ -186,7 +145,7 @@ class FirefoxProfile(object):
 
     @property
     def native_events_enabled(self):
-        return self._santise_pref(self.default_preferences['webdriver_enable_native_events'])
+        return self.default_preferences['webdriver_enable_native_events']
 
     @native_events_enabled.setter
     def native_events_enabled(self, value):
@@ -200,9 +159,9 @@ class FirefoxProfile(object):
         A zipped, base64 encoded string of profile directory
         for use with remote WebDriver JSON wire protocol
         """
-        fp = StringIO()
+        fp = BytesIO()
         zipped = zipfile.ZipFile(fp, 'w', zipfile.ZIP_DEFLATED)
-        path_root = len(self.path) + 1 # account for trailing slash
+        path_root = len(self.path) + 1  # account for trailing slash
         for base, dirs, files in os.walk(self.path):
             for fyle in files:
                 filename = os.path.join(base, fyle)
@@ -211,6 +170,11 @@ class FirefoxProfile(object):
         return base64.encodestring(fp.getvalue())
 
     def set_proxy(self, proxy):
+        import warnings
+
+        warnings.warn(
+            "This method has been deprecated. Please pass in the proxy object to the Driver Object",
+            DeprecationWarning)
         if proxy is None:
             raise ValueError("proxy can not be None")
 
@@ -224,25 +188,18 @@ class FirefoxProfile(object):
             self._set_manual_proxy_preference("ftp", proxy.ftp_proxy)
             self._set_manual_proxy_preference("http", proxy.http_proxy)
             self._set_manual_proxy_preference("ssl", proxy.ssl_proxy)
-        elif proxy.proxy_type is ProxyType.AUTODETECT:
+            self._set_manual_proxy_preference("socks", proxy.socks_proxy)
+        elif proxy.proxy_type is ProxyType.PAC:
             self.set_preference("network.proxy.autoconfig_url", proxy.proxy_autoconfig_url)
 
-    #Private Methods
-    def _santise_pref(self, item):
-        if item == 'true':
-            return True
-        elif item == 'false':
-            return False
-        else:
-            return item
     def _set_manual_proxy_preference(self, key, setting):
         if setting is None or setting is '':
             return
 
         host_details = setting.split(":")
-        self.set_preference("network.proxy.%s" % key, host_details[1][2:])
+        self.set_preference("network.proxy.%s" % key, host_details[0])
         if len(host_details) > 1:
-            self.set_preference("network.proxy.%s_port" % key, int(host_details[2]))
+            self.set_preference("network.proxy.%s_port" % key, int(host_details[1]))
 
     def _create_tempfolder(self):
         """
@@ -255,17 +212,22 @@ class FirefoxProfile(object):
         writes the current user prefs dictionary to disk
         """
         with open(self.userPrefs, "w") as f:
-            for key, value in list(user_prefs.items()):
-                f.write('user_pref("%s", %s);\n' % (key, value))
+            for key, value in user_prefs.items():
+                f.write('user_pref("%s", %s);\n' % (key, json.dumps(value)))
 
-    def _read_existing_userjs(self):
-        userjs_path = os.path.join(self.profile_dir, 'user.js')
+    def _read_existing_userjs(self, userjs):
+        import warnings
+
         PREF_RE = re.compile(r'user_pref\("(.*)",\s(.*)\)')
         try:
-            with open(userjs_path) as f:
+            with open(userjs) as f:
                 for usr in f:
                     matches = re.search(PREF_RE, usr)
-                    self.default_preferences[matches.group(1)] = matches.group(2)
+                    try:
+                        self.default_preferences[matches.group(1)] = json.loads(matches.group(2))
+                    except:
+                        warnings.warn("(skipping) failed to json.loads existing preference: " +
+                                      matches.group(1) + matches.group(2))
         except:
             # The profile given hasn't had any changes made, i.e no users.js
             pass
@@ -283,7 +245,7 @@ class FirefoxProfile(object):
         tmpdir = None
         xpifile = None
         if addon.endswith('.xpi'):
-            tmpdir = tempfile.mkdtemp(suffix = '.' + os.path.split(addon)[-1])
+            tmpdir = tempfile.mkdtemp(suffix='.' + os.path.split(addon)[-1])
             compressed_file = zipfile.ZipFile(addon, 'r')
             for name in compressed_file.namelist():
                 if name.endswith('/'):
@@ -310,20 +272,20 @@ class FirefoxProfile(object):
                 os.makedirs(extensions_path)
             shutil.copy(xpifile, addon_path + '.xpi')
         else:
-            dir_util.copy_tree(addon, addon_path, preserve_symlinks=1)
+            shutil.copytree(addon, addon_path, symlinks=True)
 
         # remove the temporary directory, if any
         if tmpdir:
-            dir_util.remove_tree(tmpdir)
+            shutil.rmtree(tmpdir)
 
     def _addon_details(self, addon_path):
         """
             returns a dictionary of details about the addon
             - addon_path : path to the addon directory
             Returns:
-            {'id': u'rainbow@colors.org', # id of the addon
-            'version': u'1.4', # version of the addon
-            'name': u'Rainbow', # name of the addon
+            {'id': 'rainbow@colors.org', # id of the addon
+            'version': '1.4', # version of the addon
+            'name': 'Rainbow', # name of the addon
             'unpack': False } # whether to unpack the addon
         """
 
@@ -364,7 +326,7 @@ class FirefoxProfile(object):
         for node in description.childNodes:
             # Remove the namespace prefix from the tag for comparison
             entry = node.nodeName.replace(em, "")
-            if entry in list(details.keys()):
-                details.update({ entry: get_text(node) })
+            if entry in details.keys():
+                details.update({entry: get_text(node)})
 
         return details
