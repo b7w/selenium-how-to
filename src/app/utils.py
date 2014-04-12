@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 from time import time
 from uuid import uuid4
+
 from app.bottle import response, request
 from app.models import User
 
+
 SESSION_NAME = 'session'
+
 
 def authenticate(username, password):
     """
@@ -31,9 +34,8 @@ def login(user):
     """
     user.session = uuid4().hex
     response.set_cookie(SESSION_NAME, user.session,
-        expires=time() + ( 3600 * 24 * 365 ),
-        path='/'
-    )
+                        expires=time() + (3600 * 24 * 365),
+                        path='/')
 
 
 def logout(user):
