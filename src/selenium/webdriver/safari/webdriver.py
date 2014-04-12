@@ -23,28 +23,27 @@ except ImportError:
 
 import os
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-from selenium.webdriver.remote.command import Command
 from selenium.webdriver.remote.webdriver import WebDriver as RemoteWebDriver
 from .service import Service
 
 class WebDriver(RemoteWebDriver):
     """
-    Controls the OperaDriver and allows you to drive the browser.
-    
+    Controls the SafariDriver and allows you to drive the browser.
+
     """
 
     def __init__(self, executable_path=None, port=0,
-                 desired_capabilities=DesiredCapabilities.OPERA):
+                 desired_capabilities=DesiredCapabilities.SAFARI):
         """
-        Creates a new instance of the Opera driver.
+        Creates a new instance of the Safari driver.
 
-        Starts the service and then creates new instance of Opera Driver.
+        Starts the service and then creates new instance of Safari Driver.
 
         :Args:
          - executable_path - path to the executable. If the default is used it assumes the executable is in the
            Environment Variable SELENIUM_SERVER_JAR
          - port - port you would like the service to run, if left as 0, a free port will be found.
-         - desired_capabilities: Dictionary object with desired capabilities (Can be used to provide various Opera switches).
+         - desired_capabilities: Dictionary object with desired capabilities (Can be used to provide various Safari switches).
         """
         if executable_path is None:
             try:
@@ -62,8 +61,8 @@ class WebDriver(RemoteWebDriver):
 
     def quit(self):
         """
-        Closes the browser and shuts down the OperaDriver executable
-        that is started when starting the OperaDriver
+        Closes the browser and shuts down the SafariDriver executable
+        that is started when starting the SafariDriver
         """
         try:
             RemoteWebDriver.quit(self)

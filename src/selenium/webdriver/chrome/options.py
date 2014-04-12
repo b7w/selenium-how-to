@@ -16,15 +16,18 @@
 # limitations under the License.
 
 import os
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities 
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 import base64
 
 
 class Options(object):
-    
-    _binary_location = ''
-    _arguments = []
-    _extension_files = []
+
+    def __init__(self):
+        self._binary_location = ''
+        self._arguments = []
+        self._extension_files = []
+        self._extensions = []
+        self._experimental_options = {}
 
     @property
     def binary_location(self):
@@ -53,7 +56,7 @@ class Options(object):
     def add_argument(self, argument):
         """
         Adds an argument to the list
-        
+
         :Args:
          - Sets the arguments
         """
@@ -70,15 +73,20 @@ class Options(object):
         """
         encoded_extensions = []
         for ext in self._extension_files:
-            file_ = open(ext)
-            encoded_extensions.append(base64.encodestring(file_.read()))
+            file_ = open(ext, 'rb')
+            # Should not use base64.encodestring() which inserts newlines every
+            # 76 characters (per RFC 1521).  Chromedriver has to remove those
+            # unnecessary newlines before decoding, causing performance hit.
+            encoded_extensions.append(base64.b64encode(file_.read()).decode('UTF-8'))
+
             file_.close()
-        return encoded_extensions
+        return encoded_extensions + self._extensions
 
     def add_extension(self, extension):
         """
-        Adds the path to the extension to a list that will be used to extract it to the ChromeDriver
-        
+        Adds the path to the extension to a list that will be used to extract it
+        to the ChromeDriver
+
         :Args:
          - extension: path to the *.crx file
         """
@@ -90,18 +98,50 @@ class Options(object):
         else:
             raise ValueError("argument can not be null")
 
+    def add_encoded_extension(self, extension):
+        """
+        Adds Base64 encoded string with extension data to a list that will be used to extract it
+        to the ChromeDriver
+
+        :Args:
+         - extension: Base64 encoded string with extension data
+        """
+        if extension:
+            self._extensions.append(extension)
+        else:
+            raise ValueError("argument can not be null")
+
+    @property
+    def experimental_options(self):
+        """
+        Returns a dictionary of experimental options for chrome.
+        """
+        return self._experimental_options
+
+    def add_experimental_option(self, name, value):
+        """
+        Adds an experimental option which is passed to chrome.
+
+        Args:
+          name: The experimental option name.
+          value: The option value.
+        """
+        self._experimental_options[name] = value
+
     def to_capabilities(self):
         """
-            Creates a capabilities with all the options that have been set and returns a
-            dictionary with everything
-        """
-        chrome = DesiredCapabilities.CHROME
+            Creates a capabilities with all the options that have been set and
 
-        chrome_options = {}
+            returns a dictionary with everything
+        """
+        chrome = DesiredCapabilities.CHROME.copy()
+
+        chrome_options = self.experimental_options.copy()
         chrome_options["extensions"] = self.extensions
-        chrome_options["binary"] = self.binary_location
+        if self.binary_location:
+            chrome_options["binary"] = self.binary_location
         chrome_options["args"] = self.arguments
-        
+
         chrome["chromeOptions"] = chrome_options
 
         return chrome
