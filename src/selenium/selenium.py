@@ -14,10 +14,19 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
+from __future__ import unicode_literals
+
 __docformat__ = "restructuredtext en"
 
-import http.client
-import urllib.request, urllib.parse, urllib.error
+try:
+    import http.client as http_client
+except ImportError:
+    import httplib as http_client
+
+try:
+    import urllib.parse as urllib_parse
+except ImportError:
+    import urllib as urllib_parse
 
 class selenium(object):
     """
@@ -184,8 +193,7 @@ class selenium(object):
         if browserConfigurationOptions:
           start_args.append(browserConfigurationOptions)
         if driver:
-          id = driver.desired_capabilities['webdriver.remote.sessionid']
-          start_args.append('webdriver.remote.sessionid=%s' % id)
+          start_args.append('webdriver.remote.sessionid=%s' % driver.session_id)
         result = self.get_string("getNewBrowserSession", start_args)
         try:
             self.sessionId = result
@@ -197,14 +205,14 @@ class selenium(object):
         self.sessionId = None
 
     def do_command(self, verb, args):
-        conn = http.client.HTTPConnection(self.host, self.port)
+        conn = http_client.HTTPConnection(self.host, self.port, timeout=30)
         try:
-            body = 'cmd=' + urllib.parse.quote_plus(str(verb).encode('utf-8'))
+            body = 'cmd=' + urllib_parse.quote_plus(unicode(verb).encode('utf-8'))
             for i in range(len(args)):
-                body += '&' + str(i+1) + '=' + \
-                        urllib.parse.quote_plus(str(args[i]).encode('utf-8'))
+                body += '&' + unicode(i+1) + '=' + \
+                        urllib_parse.quote_plus(unicode(args[i]).encode('utf-8'))
             if (None != self.sessionId):
-                body += "&sessionId=" + str(self.sessionId)
+                body += "&sessionId=" + unicode(self.sessionId)
             headers = {
                 "Content-Type":
                 "application/x-www-form-urlencoded; charset=utf-8"
@@ -212,7 +220,7 @@ class selenium(object):
             conn.request("POST", "/selenium-server/driver/", body, headers)
 
             response = conn.getresponse()
-            data = str(response.read(), "UTF-8")
+            data = unicode(response.read(), "UTF-8")
             if (not data.startswith('OK')):
                 raise Exception(data)
             return data

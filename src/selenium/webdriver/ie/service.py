@@ -17,8 +17,6 @@
 import subprocess
 from subprocess import PIPE
 import time
-import os
-import signal
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common import utils
 
@@ -66,10 +64,12 @@ class Service(object):
                 cmd.append("--log-file=%s" % self.log_file)
             self.process = subprocess.Popen(cmd,
                     stdout=PIPE, stderr=PIPE)
+        except TypeError:
+            raise
         except:
             raise WebDriverException(
                 "IEDriver executable needs to be available in the path. \
-                Please download from http://code.google.com/p/selenium/downloads/list\
+                Please download from http://selenium-release.storage.googleapis.com/index.html\
                 and read up at http://code.google.com/p/selenium/wiki/InternetExplorerDriver")
         count = 0
         while not utils.is_url_connectable(self.port):
@@ -87,8 +87,12 @@ class Service(object):
             return
 
         #Tell the Server to die!
-        import urllib.request, urllib.error, urllib.parse
-        urllib.request.urlopen("http://127.0.0.1:%d/shutdown" % self.port)
+        try:
+            from urllib import request as url_request
+        except ImportError:
+            import urllib2 as url_request
+
+        url_request.urlopen("http://127.0.0.1:%d/shutdown" % self.port)
         count = 0
         while utils.is_connectable(self.port):
             if count == 30:
@@ -101,6 +105,6 @@ class Service(object):
             if self.process:
                 self.process.kill()
                 self.process.wait()
-        except AttributeError:
+        except WindowsError:
             # kill may not be available under windows environment
             pass

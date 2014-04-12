@@ -6,7 +6,8 @@ import re
 
 SEQUENCE = 1
 
-def nextId():
+
+def next_id():
     """
     Return unique Int id near this tread
     :rtype: int
@@ -17,16 +18,16 @@ def nextId():
 
 
 class ManagerBase:
-    def __init__(self, modelCls):
+    def __init__(self, model_cls):
         #: :type: class
-        self._modelCls = modelCls
-        self._dump_file = '../out/{0}.dump'.format(self._modelCls.__name__.lower())
+        self._model_cls = model_cls
+        self._dump_file = '../out/{0}.dump'.format(self._model_cls.__name__.lower())
         #: :type: modelCls
         self._objects = []
         self.load()
 
     def create(self, *args, **kwargs):
-        self._objects.append(self._modelCls(*args, **kwargs))
+        self._objects.append(self._model_cls(*args, **kwargs))
 
     def add(self, user):
         self._objects.append(user)
@@ -77,14 +78,14 @@ class User:
     objects = None
 
     def __init__(self, email, name, password):
-        self.id = nextId()
+        self.id = next_id()
         self.session = ""
         self.email = email
         self.name = name
         self.password = password
         self.messages = []
 
-    def sendTo(self, user, message):
+    def send_to(self, user, message):
         """
         :type user: User
         :type message: str
@@ -101,6 +102,7 @@ class User:
     def __repr__(self):
         return '<User {0}>'.format(self.name)
 
+
 User.objects = ManagerBase(User)
 
 
@@ -113,7 +115,7 @@ class Message:
         :type user: User
         :type message: str
         """
-        self.id = nextId()
+        self.id = next_id()
         self.message = message.strip()
         self.owner = user
         user_names = re.findall(r'@(\w+)', self.message)
@@ -127,5 +129,6 @@ class Message:
 
     def __repr__(self):
         return '<Message {0}, "{1}">'.format(self.owner.name, self.message)
+
 
 Message.objects = ManagerBase(Message)

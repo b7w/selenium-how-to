@@ -26,13 +26,30 @@ class FirefoxBinary(object):
 
     NO_FOCUS_LIBRARY_NAME = "x_ignore_nofocus.so"
 
-    def __init__(self, firefox_path=None):
+    def __init__(self, firefox_path=None, log_file=None):
+        """
+        Creates a new instance of Firefox binary.
+
+        :Args:
+         - firefox_path - Path to the Firefox executable. By default, it will be detected from the standard locations.
+         - log_file - A file object to redirect the firefox process output to. It can be sys.stdout.
+                      Please note that with parallel run the output won't be synchronous.
+                      By default, it will be redirected to subprocess.PIPE.
+        """
         self._start_cmd = firefox_path
+        self._log_file = log_file or PIPE
+        self.command_line = None
         if self._start_cmd is None:
             self._start_cmd = self._get_firefox_start_cmd()
         # Rather than modifying the environment of the calling Python process
         # copy it and modify as needed.
         self._firefox_env = os.environ.copy()
+        self._firefox_env["MOZ_CRASHREPORTER_DISABLE"] = "1"
+        self._firefox_env["MOZ_NO_REMOTE"] = "1"
+        self._firefox_env["NO_EM_RESTART"] = "1"
+
+    def add_command_line_options(self, *args):
+        self.command_line = args
 
     def launch_browser(self, profile):
         """Launches the browser for the given profile name.
@@ -54,17 +71,19 @@ class FirefoxBinary(object):
 
     def _start_from_profile_path(self, path):
         self._firefox_env["XRE_PROFILE_PATH"] = path
-        self._firefox_env["MOZ_CRASHREPORTER_DISABLE"] = "1"
-        self._firefox_env["MOZ_NO_REMOTE"] = "1"
-        self._firefox_env["NO_EM_RESTART"] = "1"
-        
+
         if platform.system().lower() == 'linux':
             self._modify_link_library_path()
-        
-        Popen([self._start_cmd, "-silent"], stdout=PIPE, stderr=STDOUT,
+        command = [self._start_cmd, "-silent"]
+        if self.command_line is not None:
+            for cli in self.command_line:
+                command.append(cli)
+
+        Popen(command, stdout=self._log_file, stderr=STDOUT,
               env=self._firefox_env).communicate()
+        command[1] = '-foreground'
         self.process = Popen(
-            [self._start_cmd, "-foreground"], stdout=PIPE, stderr=STDOUT,
+            command, stdout=self._log_file, stderr=STDOUT,
             env=self._firefox_env)
 
     def _get_firefox_output(self):
@@ -89,7 +108,10 @@ class FirefoxBinary(object):
         return True
 
     def _find_exe_in_registry(self):
-        from winreg import OpenKey, QueryValue, HKEY_LOCAL_MACHINE
+        try:
+            from _winreg import OpenKey, QueryValue, HKEY_LOCAL_MACHINE
+        except ImportError:
+            from winreg import OpenKey, QueryValue, HKEY_LOCAL_MACHINE
         import shlex
         keys = (
            r"SOFTWARE\Classes\FirefoxHTML\shell\open\command",
@@ -101,9 +123,12 @@ class FirefoxBinary(object):
                 key = OpenKey(HKEY_LOCAL_MACHINE, path)
                 command = QueryValue(key, "")
                 break
-            except WindowsError:
+            except OSError:
                 pass
         else:
+            return ""
+
+        if not command:
             return ""
  
         return shlex.split(command)[0]
@@ -119,16 +144,24 @@ class FirefoxBinary(object):
         elif platform.system() == 'Java' and os._name == 'nt':
             start_cmd = self._default_windows_location()
         else:
-            # Maybe iceweasel (Debian) is another candidate...
-            for ffname in ["firefox2", "firefox", "firefox-3.0", "firefox-4.0"]:
+            for ffname in ["firefox", "iceweasel"]:
                 start_cmd = self.which(ffname)
                 if start_cmd is not None:
                     break
+            else:
+                # couldn't find firefox on the system path
+                raise RuntimeError("Could not find firefox in your system PATH." + 
+                    " Please specify the firefox binary location or install firefox")
         return start_cmd
 
     def _default_windows_location(self):
-        program_files = os.getenv("PROGRAMFILES", r"\Program Files")
-        return os.path.join(program_files, "Mozilla Firefox\\firefox.exe")
+        program_files = [os.getenv("PROGRAMFILES", r"C:\Program Files"),
+                         os.getenv("PROGRAMFILES(X86)", r"C:\Program Files (x86)")]
+        for path in program_files:
+            binary_path = os.path.join(path, r"Mozilla Firefox\firefox.exe")
+            if os.access(binary_path, os.X_OK):
+                return binary_path
+        return ""
 
     def _modify_link_library_path(self):
         existing_ld_lib_path = os.environ.get('LD_LIBRARY_PATH', '')
