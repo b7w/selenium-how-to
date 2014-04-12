@@ -56,3 +56,8 @@ You can esay run web server by calling *cd src*; *python server.py*. And tests *
 -------------------
 [docs/labs.md](https://bitbucket.org/b7w/seleniumhowto/src/default/docs/labs.md)
  - Немного заданий для выполнения
+
+
+Дополнительно
+-------------
+В проект встроены библиотеки selenium driver и bottle.py распространяющиеся под лицензиями apache license 2.0 и MIT License.
