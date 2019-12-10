@@ -1,7 +1,7 @@
 Selenium How To
 ===============
 
-It is simple web application for testing purpose with selenium tool [Selenium](http://seleniumhq.org/). Plus [how to](https://bitbucket.org/b7w/seleniumhowto/src/default/docs) with explaining of code, in russian. It is written with python [bottle](http://bottlepy.org/) mini framework, and twitter [bootstrap](http://twitter.github.com/bootstrap/) front-end framework.
+It is simple web application for testing purpose with selenium tool [Selenium](http://seleniumhq.org/). Plus [how to](docs) with explaining of code, in russian. It is written with python [bottle](http://bottlepy.org/) mini framework, and twitter [bootstrap](http://twitter.github.com/bootstrap/) front-end framework.
 
 Dependencies are already included. All code running on python 3. *Note, selenium library is ported to third version.*
 
