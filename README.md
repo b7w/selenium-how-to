@@ -14,47 +14,42 @@ You can esay run web server by calling *cd src*; *python server.py*. And tests *
 Обратная связь
 ---------------
 Вы всегда можете задать вопрос по электронной почте [black7white@ya.ru](mailto:black7white@ya.ru).
-Если вы нашли какую-то ошибку, не поленитесь, добавьте ее в [issue tracker](https://bitbucket.org/b7w/seleniumhowto/issues?status=new&status=open).
-
-
-Методичка
----------
-Документация ниже, это краткое и неполное изложение методичкого указание находяшегося в [Downloads](https://bitbucket.org/b7w/seleniumhowto/downloads).
+Если вы нашли какую-то ошибку, не поленитесь, добавьте ее в [issue tracker](https://github.com/b7w/selenium-how-to/issues).
 
 
 Описание
 --------
-[docs/intro.md](https://bitbucket.org/b7w/seleniumhowto/src/default/docs/intro.md)
+[docs/intro.md](docs/intro.md)
  - вступление
 
-[docs/setup.md](https://bitbucket.org/b7w/seleniumhowto/src/default/docs/setup.md)
+[docs/setup.md](docs/setup.md)
  - настройка среды и запуск
 
-[docs/html.md](https://bitbucket.org/b7w/seleniumhowto/src/default/docs/html.md)
+[docs/html.md](docs/html.md)
  - базовые понятия HTML
 
-[docs/conclusion.md](https://bitbucket.org/b7w/seleniumhowto/src/default/docs/conclusion.md)
+[docs/conclusion.md](docs/conclusion.md)
  - заключение
 
 
 Разбор тестов
 -------------
-[docs/tests/base.md](https://bitbucket.org/b7w/seleniumhowto/src/default/docs/tests/base.md)
+[docs/tests/base.md](docs/tests/base.md)
  - абстрактный тестовый случай
 
-[docs/tests/example1.md](https://bitbucket.org/b7w/seleniumhowto/src/default/docs/tests/example1.md)
+[docs/tests/example1.md](docs/tests/example1.md)
  - обход ссылок на странице
 
-[docs/tests/example2.md](https://bitbucket.org/b7w/seleniumhowto/src/default/docs/tests/example2.md)
+[docs/tests/example2.md](docs/tests/example2.md)
  - работа с базовыми контролами
 
-[docs/tests/example3.md](https://bitbucket.org/b7w/seleniumhowto/src/default/docs/tests/example3.md)
+[docs/tests/example3.md](docs/tests/example3.md)
  - некоторое подобие [twitter.com](https://twitter.com)
 
 
 Лабораторные работы
 -------------------
-[docs/labs.md](https://bitbucket.org/b7w/seleniumhowto/src/default/docs/labs.md)
+[docs/labs.md](docs/labs.md)
  - Немного заданий для выполнения
 
 
